@@ -1,8 +1,11 @@
 import React from "react";
+import {
+    SafeAreaView, View, Text,StyleSheet,ScrollView
+} from "react-native";
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
-import { createDrawerNavigator } from 'react-navigation-drawer';
+import { createDrawerNavigator ,DrawerItems } from 'react-navigation-drawer';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -201,7 +204,21 @@ const CartStack = createStackNavigator({
   
     
     
-});
+
+    },
+    {
+        contentComponent: (props) => (
+         <SafeAreaView>
+             <View style={{height: 100,alignItems: 'center', justifyContent: 'center'}}>
+     
+               <Text style={{fontSize: 32}}>LOGO</Text>
+             </View>
+           <ScrollView>
+             <DrawerItems {...props} />
+           </ScrollView>
+         </SafeAreaView>
+        )
+     });
 
 const AppContainer = createAppContainer(NavigationDrawer);
 
