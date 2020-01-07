@@ -1,6 +1,6 @@
 import React from "react";
 import {
-    SafeAreaView, View, Text,StyleSheet,ScrollView
+    SafeAreaView, View, Text,StyleSheet,ScrollView, ImageBackground
 } from "react-native";
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
@@ -14,12 +14,11 @@ import FavScreen from "../Screens/FavScreen";
 import HomeScreen from "../Screens/HomeScreen";
 import CategoriesScreen from "../Screens/CategoriesScreen";
 import CartScreen from "../Screens/CartScreen";
-import AboutScreen from "../Screens/AboutScreen";
 const defaultOptionsForStack =  {
     defaultNavigationOptions: {
        
     headerStyle: {
-        backgroundColor: '#FF543C',
+        backgroundColor: '#e6005c',
         elevation: 0,
         shadowOpacity: 0
     },
@@ -57,10 +56,6 @@ const defaultOptionsForStack =  {
           headerTitle : "Home Screen"
       }
     },
-    About : {
-        screen : AboutScreen, 
-        
-    },
     // Cart : {
     //     screen : CartScreen
     // }
@@ -96,9 +91,6 @@ const CartStack = createStackNavigator({
             headerTitle : "Items in Cart"
         }
     },
-    
-      
-
 }, defaultOptionsForStack
 
 );     
@@ -107,61 +99,10 @@ const CartStack = createStackNavigator({
 
 
 
-  const TabNavigator = createBottomTabNavigator({
-    Home : {
-        screen : HomeStack,
-        navigationOptions : {
-            tabBarIcon: ({ tintColor }) => {
-                return   <Icon name="home" size={20} color={tintColor} />
-               }
-        }
-    },  
-    
-    
-    Categories: {
-        screen :  CategoriesStack,
-        navigationOptions : {
-            tabBarIcon: ({ tintColor }) => {
-             return   <FontAwesome name="th-list" size={20} color={tintColor} />
-            }
-                
-            },
-        
-        
-    },
-    
-    "Favourites": {
-    screen :  FavStack,
-        navigationOptions : {
-            tabBarIcon: ({ tintColor }) => { 
-                return   <Fontisto name="heart" size={20} color={tintColor} />
-               }
-    }
-    },   
-    Cart: {
-        screen :  CartStack,
-            navigationOptions : {
-                tabBarIcon: ({ tintColor }) => {
-                    return   <Icon name="shopping-cart" size={20} color={tintColor} />
-                   }
-        }
-        },
-  }, {
-      tabBarOptions : {
-        showLabel : false,
-          activeTintColor : "#FF543C",
-          inactiveTintColor : "black",
-          tabStyle : {height : 50 , zIndex:99, borderColor:"white", borderTopWidth:0},
-          labelStyle : {fontSize: 12, paddingTop:2,paddingBottom:3, fontFamily : "halfmoon_bold",},
-      }
-  }
-  
-  
-  );
 
   const NavigationDrawer = createDrawerNavigator({
     Home: {
-        screen : TabNavigator,
+        screen : HomeStack,
             navigationOptions : {
                 drawerIcon: ({ tintColor }) => {
                     return   <Icon name="home" size={20} color={tintColor} />
@@ -169,7 +110,7 @@ const CartStack = createStackNavigator({
         }
         },
     Categories : {
-        screen : CategoriesScreen,
+        screen : CategoriesStack,
             navigationOptions : {
                 drawerIcon: ({ tintColor }) => {
                     return   <Icon name="th-list" size={20} color={tintColor} />
@@ -178,7 +119,7 @@ const CartStack = createStackNavigator({
         },
 
     Favourites : {
-        screen : FavScreen,
+        screen : FavStack,
             navigationOptions : {
                 drawerIcon: ({ tintColor }) => {
                     return    <Fontisto name="heart" size={20} color={tintColor} />
@@ -186,32 +127,25 @@ const CartStack = createStackNavigator({
         }
         },
     Cart : {
-        screen : CartScreen,
+        screen : CartStack,
             navigationOptions : {
                 drawerIcon: ({ tintColor }) => {
                     return   <Icon name="shopping-cart" size={20} color={tintColor} />
                    }
         }
         },
-    About : {
-        screen : AboutScreen,
-            navigationOptions : {
-                drawerIcon: ({ tintColor }) => {
-                    return   <Entypo name="info-with-circle" size={20} color={tintColor} />
-                   }
-        }
-        },
-  
-    
-    
-
     },
     {
+        contentOptions: {
+            activeTintColor: "#e6005c"
+        },
         contentComponent: (props) => (
+           
          <SafeAreaView>
              <View style={{height: 100,alignItems: 'center', justifyContent: 'center'}}>
-     
-               <Text style={{fontSize: 32}}>LOGO</Text>
+             <ImageBackground resizeMode="cover" source={require("../assets/images/companyIcon.jpg")} style={{width: '100%', height: '100%'}}>
+                <Text style={{fontSize:22, color:"white", textAlign : "center", marginVertical:50}}>Sanan Ali</Text>
+            </ImageBackground>
              </View>
            <ScrollView>
              <DrawerItems {...props} />

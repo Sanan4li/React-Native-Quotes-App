@@ -21,10 +21,45 @@ import Entypo from "react-native-vector-icons";
         };
       };
     render() {
+        console.log(this.props.navigation.state.routeName);
         return (
             <View style={styles.main}>
-                <Text>
-                    Home Screen Test
+                <Button title="Open Menus"
+                onPress={
+                    ()=>{
+                        this.props.navigation.openDrawer();
+                    }
+                }
+                />
+                <Text style={{fontFamily : "Anton-Regular"}}>
+                    Testing Custom Fonts : Anton-Regular
+                </Text>
+                <Text style={{fontFamily : "BebasNeue-Regular"}}>
+                    Testing Custom Fonts : BebasNeue-Regular
+                </Text>
+                <Text style={{fontFamily : "FiraSansCondensed-Black"}}>
+                    Testing Custom Fonts : FiraSansCondensed-Black
+                </Text>
+                <Text style={{fontFamily : "FjallaOne-Regular"}}>
+                    Testing Custom Fonts : FjallaOne-Regular
+                </Text>
+                <Text style={{fontFamily : "FrancoisOne-Regular"}}>
+                    Testing Custom Fonts : FrancoisOne-Regular
+                </Text>
+                <Text style={{fontFamily : "IbarraRealNova-Regular"}}>
+                    Testing Custom Fonts : IbarraRealNova-Regular
+                </Text>
+                <Text style={{fontFamily : "Jaldi-Regular"}}>
+                    Testing Custom Fonts : Jaldi-Regular
+                </Text>
+                <Text style={{fontFamily : "KulimPark-Light"}}>
+                    Testing Custom Fonts : KulimPark-Light
+                </Text>
+                <Text style={{fontFamily : "KulimPark-LightItalic"}}>
+                    Testing Custom Fonts : KulimPark-LightItalic
+                </Text>
+                <Text style={{fontFamily : "KulimPark-Regular"}}>
+                    Testing Custom Fonts : KulimPark-Regular
                 </Text>
                
             </View>
