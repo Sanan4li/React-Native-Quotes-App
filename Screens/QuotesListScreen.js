@@ -1,8 +1,11 @@
 import React, {Component} from "react";
-import {StyleSheet, View, Image, TouchableOpacity, FlatList, Clipboard , Text} from 'react-native';
+import {StyleSheet, View, Image, TouchableOpacity, FlatList, Clipboard , Text, Modal, PermissionsAndroid, Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Fontisto from "react-native-vector-icons/Fontisto";
 import Toast, {DURATION} from 'react-native-easy-toast';
+import ViewShot from "react-native-view-shot";
+import Entypo from "react-native-vector-icons/Entypo";
+import CameraRoll from "@react-native-community/cameraroll";
 class QuotesListScreen extends Component{
 
     static navigationOptions = ({ navigation }) => {
@@ -23,13 +26,58 @@ class QuotesListScreen extends Component{
           {id: "4",liked:"false",title : "Second", body: "No problem can be solved from the same level of consciousness that created it",image : "../assets/images/companyIcon.jpg" },
           {id: "5",liked:"false",title : "First", body: "Try not to become a man of success, but rather try to become a man of value.",image : "../assets/images/companyIcon.jpg" },
           ],
-          likeColor:"white"
+          likeColor:"white",
+          modalVisible:false,
+          currentQuote:null,
+          
     }
    
     copyText = ()=>{
         () => Clipboard.setString(data.item.body);
         this.refs.toast.show('Copied to Clipboard!');
     }
+
+    hideModal=()=>{
+        this.setState({
+            modalVisible:false
+        });
+    }
+    getPermissions = async ()=>{
+
+        try {
+          const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+            {
+              title: "Cool Photo App Camera Permission",
+              message:
+                "Cool Photo App needs access to your camera " +
+                "so you can take awesome pictures.",
+              buttonNeutral: "Ask Me Later",
+              buttonNegative: "Cancel",
+              buttonPositive: "OK"
+            }
+          );
+          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            this.refs.viewShot.capture().then(uri => {
+              console.log("Converted to Image.. Saving to Phone's Gallery", uri);
+            
+              CameraRoll.saveToCameraRoll(uri);
+              this.refs.toast.show('Saved to Gallery');
+              this.hideModal();
+            });
+          } else {
+            this.refs.toast.show('Saving Failed! Storage Permission Required.');
+          }
+        } catch (err) {
+          console.warn(err);
+        }
+      }
+
+
+
+
+
+  
   
     render(){
        
@@ -60,7 +108,7 @@ class QuotesListScreen extends Component{
                   </Text>
                   </View>
                   <View style={{alignItems:"flex-end", marginTop:5}}>
-                  <Text style={{color:"#38b750"}}>
+                  <Text style={{color:"#66ff66"}}>
                       ~ Albert Einstien
                   </Text>
                  </View>
@@ -88,7 +136,16 @@ class QuotesListScreen extends Component{
                <TouchableOpacity  style={{width:"25%",padding:5}} onPress={this.copyText }>
                <Icon name="copy" color="white"size={20} style={{alignSelf:"center"}}/>
                </TouchableOpacity>
-               <TouchableOpacity  style={{ width:"25%",padding:5}}>
+               <TouchableOpacity  style={{ width:"25%",padding:5}} onPress={
+                  
+                   ()=>{
+                       this.setState({
+                           modalVisible:true,
+                           currentQuote:data.item.body
+                       })
+                       
+                   }
+               }>
                <Icon name="download" color="white"size={20} style={{alignSelf:"center"}}/>
                </TouchableOpacity>
                <TouchableOpacity  style={{ width:"25%",padding:5}}>
@@ -100,11 +157,72 @@ class QuotesListScreen extends Component{
               )
            }}
            />
+            <Modal
+            
+          animationType="slide"
+          transparent={false}
+          visible={this.state.modalVisible}
+          onRequestClose={
+              this.hideModal
+          }>
+            
+          <View style={{ backgroundColor:"#1a1a1a",
+          flex: 1,
+          flexDirection: 'column',
+         
+          width:"100%",
+          height:"70%",
+         }}>
+               <View style={{backgroundColor:"#1a1a1a", height:"30%", justifyContent:"center", alignItems:"center"}}>
+                  <Text style={{color:"white", fontSize:20}}>
+                      Ad Will Be Placed Here
+                  </Text>
+              </View>
+              <ViewShot ref="viewShot" options={{ format: "jpg", quality: 0.9 }}>
+
+          <View style={{marginTop:"5%", padding:10,}}>
+                 
+                <Image source={require("../assets/images/quotesIcon.png")} style={{width:50, height:50}} />
+                <Text style={{color:"white",fontFamily:"KulimPark-Light", fontSize:22, paddingHorizontal:20}} numberOfLines={8}>
+                {this.state.currentQuote}
+               </Text>
+                <View style={{alignItems:"flex-end", marginRight:10, paddingBottom:10}}>
+                    <Text style={{color:"#66ff66", paddingRight:10, fontSize:18, paddingBottom:10}}>
+                        ~Albert Einstien
+                    </Text>
+                </View>
+                </View>
+                 </ViewShot>
+                 <TouchableOpacity style={styles.button} onPress={
+
+                    this.getPermissions
+                   
+              }>
+              <View style={{ width:"50%"}}>
+               <Text style={styles.buttonText}>  Download Image </Text>
+               </View>
+               <View style={{ width:"20%"}}>
+               <Icon name="download" color="white"size={25} style={{alignSelf:"center"}}/>
+               </View>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.button} onPress={
+                this.hideModal
+              }>
+              <View style={{ width:"50%"}}>
+               <Text style={styles.buttonText}>  Cancel </Text>
+               </View>
+               <View style={{ width:"20%"}}>
+               <Entypo name="squared-cross" color="white"size={25} style={{alignSelf:"center"}}/>
+               </View>
+              </TouchableOpacity>
+          </View>
+          
+        </Modal>
              <Toast ref="toast"  style={{backgroundColor:'#38b750'}}
-                    
+                    position="top"
                     positionValue={150}
-                    fadeInDuration={550}
-                    fadeOutDuration={500}
+                    fadeInDuration={850}
+                    fadeOutDuration={800}
                     opacity={1}
                     textStyle={{color:'white'}} />
         </View>
@@ -119,6 +237,24 @@ const styles = StyleSheet.create({
     main : {
         backgroundColor:"#1a1a1a",
         flex:1,
+    },
+    button : {
+        width:"90%",
+        height:"8%",
+        backgroundColor:"#38b750",
+        justifyContent:"space-around",
+        alignItems:"center",
+        marginTop:10,
+        alignSelf:"center",
+        flexDirection:"row",
+    },
+    buttonText: {
+        color:"white",
+        alignContent:"center",
+        fontSize:20,
+        alignSelf:"center",
+       
+
     }
 })
 export default QuotesListScreen;

@@ -50,7 +50,7 @@ import Share from 'react-native-share';
           );
           if (granted === PermissionsAndroid.RESULTS.GRANTED) {
             this.refs.viewShot.capture().then(uri => {
-              console.log("do something with ", uri);
+              console.log("Converted to Image.. Saving to Phone's Gallery", uri);
             
               CameraRoll.saveToCameraRoll(uri);
               this.refs.toast.show('Saved to Gallery');
@@ -104,7 +104,8 @@ import Share from 'react-native-share';
                 
               <View style={{ height:"60%"}}>
               <ViewShot ref="viewShot" options={{ format: "jpg", quality: 0.9 }}>
-       
+              <View style={{marginTop:"5%", padding:10}}>
+                 
                  <Image source={require("../assets/images/quotesIcon.png")} style={{width:50, height:50}} />
                 <Text style={{color:"white",fontFamily:"KulimPark-Light", fontSize:22, paddingHorizontal:20}} numberOfLines={8}>
                 The world is in greater peril from those who tolerate or encourage evil than from those who actually commit it.
@@ -113,6 +114,7 @@ import Share from 'react-native-share';
                     <Text style={{color:"#66ff66", paddingRight:10, fontSize:18, paddingBottom:10}}>
                         ~Albert Einstien
                     </Text>
+                </View>
                 </View>
             </ViewShot>
                 <View style={{flexDirection:"row", marginTop:5}}>
@@ -174,8 +176,8 @@ import Share from 'react-native-share';
               <Toast ref="toast"  style={{backgroundColor:'#38b750'}}
                     position="top"
                     positionValue={150}
-                    fadeInDuration={550}
-                    fadeOutDuration={500}
+                    fadeInDuration={850}
+                    fadeOutDuration={850}
                     opacity={1}
                     textStyle={{color:'white'}} />
            </View>
