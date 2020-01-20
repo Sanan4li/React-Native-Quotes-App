@@ -81,21 +81,21 @@ state = {
 
 
     componentDidMount  = ()=> {
-        // getting permission of storage
-        request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE).then(result => {
-         this.setState({
-           storagePermission : result
-         }), ()=>{
-           console.log(this.state.storagePermission);
-         };
-       });
-       request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE).then(result => {
-        this.setState({
-          storagePermission : result
-        }), ()=>{
-          console.log(this.state.storagePermission);
-        };
-      });
+    //     // getting permission of storage
+    //     request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE).then(result => {
+    //      this.setState({
+    //        storagePermission : result
+    //      }), ()=>{
+    //        console.log(this.state.storagePermission);
+    //      };
+    //    });
+    //    request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE).then(result => {
+    //     this.setState({
+    //       storagePermission : result
+    //     }), ()=>{
+    //       console.log(this.state.storagePermission);
+    //     };
+    //   });
        }
 
     render() {

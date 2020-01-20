@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {View, StyleSheet, Text, Image, Clipboard, TouchableOpacity, } from "react-native";
+import {View, StyleSheet, Text, Image, Clipboard, TouchableOpacity,PermissionsAndroid } from "react-native";
 import MyHeaderButton from "./MyHeaderButton";
 import CameraRoll from "@react-native-community/cameraroll";
 import MyHeaderButtonNew from "./MyHeaderButtonNew";
@@ -9,7 +9,7 @@ import Fontisto from "react-native-vector-icons/Fontisto";
 import ViewShot from "react-native-view-shot";
 import Toast, {DURATION} from 'react-native-easy-toast';
 import Share from 'react-native-share';
-//import RNFetchBlob from 'react-native-fetch-blob';
+
 
  class QuoteDetailScreen extends Component {
     static navigationOptions = ({ navigation }) => {
@@ -33,28 +33,44 @@ import Share from 'react-native-share';
         likeColor:"white",
         image :null
       }
+
+      getPermissions = async ()=>{
+        try {
+          const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+            {
+              title: "Cool Photo App Camera Permission",
+              message:
+                "Cool Photo App needs access to your camera " +
+                "so you can take awesome pictures.",
+              buttonNeutral: "Ask Me Later",
+              buttonNegative: "Cancel",
+              buttonPositive: "OK"
+            }
+          );
+          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            this.refs.viewShot.capture().then(uri => {
+              console.log("do something with ", uri);
+            
+              CameraRoll.saveToCameraRoll(uri);
+              this.refs.toast.show('Saved to Gallery');
+             
+            });
+          } else {
+            this.refs.toast.show('Saving Failed! Storage Permission Required.');
+          }
+        } catch (err) {
+          console.warn(err);
+        }
+      }
+
+
+
       componentDidMount () {
-        this.refs.viewShot.capture().then(uri => {
-          console.log("do something with ", uri);
-         this.setState({
-           image: uri
-         });
-         
-  //         RNFetchBlob
-  // .config({
-  //   // add this option that makes response data to be stored as a file,
-  //   // this is much more performant.
-  //   fileCache : true,
-  // })
-  // .fetch('GET', uri, {
-  //   //some headers ..
-  // })
-  // .then((res) => {
-  //   // the temp file path
-  //   console.log('The file saved to ', res.path())
-  // });
-         
-        });
+       
+        
+
+        
       } 
 
       ShareNow = ()=>{
@@ -77,8 +93,8 @@ import Share from 'react-native-share';
         this.refs.toast.show('Copied to Clipboard!');
     }
     saveImage = ()=>{
+      console.log(this.state.image)
       CameraRoll.saveToCameraRoll(this.state.image);
-      () => Clipboard.setString(data.item.body);
       this.refs.toast.show('Saved to Gallery');
   }
     render() {
@@ -93,8 +109,8 @@ import Share from 'react-native-share';
                 <Text style={{color:"white",fontFamily:"KulimPark-Light", fontSize:22, paddingHorizontal:20}} numberOfLines={8}>
                 The world is in greater peril from those who tolerate or encourage evil than from those who actually commit it.
                 </Text>
-                <View style={{alignItems:"flex-end", marginRight:10}}>
-                    <Text style={{color:"#38b750", paddingRight:10, fontSize:18}}>
+                <View style={{alignItems:"flex-end", marginRight:10, paddingBottom:10}}>
+                    <Text style={{color:"#66ff66", paddingRight:10, fontSize:18, paddingBottom:10}}>
                         ~Albert Einstien
                     </Text>
                 </View>
@@ -145,7 +161,7 @@ import Share from 'react-native-share';
                
               </TouchableOpacity>
               <TouchableOpacity style={styles.button} onPress={
-                 this.saveImage
+                this.getPermissions
               }>
               <View style={{ width:"50%"}}>
                <Text style={styles.buttonText}>  Download Image </Text>
