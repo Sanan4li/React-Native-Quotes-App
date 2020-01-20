@@ -8,19 +8,23 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createDrawerNavigator ,DrawerItems } from 'react-navigation-drawer';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Categories from "../Screens/Categories";
 import Entypo from 'react-native-vector-icons/Entypo';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import FavScreen from "../Screens/FavScreen";
 import HomeScreen from "../Screens/HomeScreen";
 import CategoriesScreen from "../Screens/CategoriesScreen";
 import CartScreen from "../Screens/CartScreen";
+import QuoteDetailScreen from "../Screens/QuoteDetailScreen";
+import QuotesListScreen from "../Screens/QuotesListScreen";
 const defaultOptionsForStack =  {
     defaultNavigationOptions: {
        
     headerStyle: {
-        backgroundColor: '#e6005c',
+        backgroundColor: '#1a1a1a',
         elevation: 0,
-        shadowOpacity: 0
+        shadowOpacity: 0,
+        height:50
     },
     headerTintColor: '#FFFFFF',
     headerTitleStyle: {
@@ -41,7 +45,9 @@ const defaultOptionsForStack =  {
       },
     //   CategoriesProducts : {
     //       screen : CategoriesProductsScreen,
-          
+    QuestList : {
+        screen : QuotesListScreen
+    }
    
 
   }, defaultOptionsForStack
@@ -53,9 +59,21 @@ const defaultOptionsForStack =  {
     Home : {
         screen : HomeScreen,
         navigationOptions : {
-          headerTitle : "Home Screen"
+          headerTitle : ""
       }
     },
+    Detail : {
+        screen : QuoteDetailScreen,
+        navigationOptions : {
+          headerTitle : ""
+      }
+    },
+    QuotesList : {
+        screen : QuotesListScreen
+    },
+    Cat : {
+        screen : Categories,
+    }
     // Cart : {
     //     screen : CartScreen
     // }
@@ -70,7 +88,7 @@ const FavStack = createStackNavigator({
     FavScreen : {
         screen : FavScreen,
         navigationOptions : {
-          headerTitle : "Wish List"
+          headerTitle : "Favourites"
       }
     },
 
@@ -88,7 +106,7 @@ const CartStack = createStackNavigator({
     Cart : {
         screen : CartScreen,
         navigationOptions:{
-            headerTitle : "Items in Cart"
+            headerTitle : "About"
         }
     },
 }, defaultOptionsForStack
@@ -106,7 +124,8 @@ const CartStack = createStackNavigator({
             navigationOptions : {
                 drawerIcon: ({ tintColor }) => {
                     return   <Icon name="home" size={20} color={tintColor} />
-                   }
+                   },
+
         }
         },
     Categories : {
@@ -126,25 +145,27 @@ const CartStack = createStackNavigator({
                    }
         }
         },
-    Cart : {
+    About : {
         screen : CartStack,
             navigationOptions : {
                 drawerIcon: ({ tintColor }) => {
-                    return   <Icon name="shopping-cart" size={20} color={tintColor} />
+                    return   <Icon name="info-circle" size={20} color={tintColor} />
                    }
         }
         },
     },
     {
         contentOptions: {
-            activeTintColor: "#e6005c"
+            activeTintColor: "#33ff33",
+            activeBackgroundColor : "#000000",
+            inactiveTintColor:"white"
         },
         contentComponent: (props) => (
            
-         <SafeAreaView>
+         <SafeAreaView style={{backgroundColor:"#1a1a1a", color:"white", flex:1}}>
              <View style={{height: 100,alignItems: 'center', justifyContent: 'center'}}>
-             <ImageBackground resizeMode="cover" source={require("../assets/images/companyIcon.jpg")} style={{width: '100%', height: '100%'}}>
-                <Text style={{fontSize:22, color:"white", textAlign : "center", marginVertical:50}}>Sanan Ali</Text>
+             <ImageBackground resizeMode="cover" source={require("../assets/images/qu.jpg")} style={{width: '100%', height: '100%'}}>
+                <Text style={{fontSize:20, color:"white", textAlign : "left", marginTop:20, marginLeft:50, fontFamily:"BebasNeue-Regular"}}>Daily</Text>
             </ImageBackground>
              </View>
            <ScrollView>

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import {StyleSheet, View, Text , Button} from 'react-native';
 import MyHeaderButton from "./MyHeaderButton";
 import { HeaderButtons , Item } from "react-navigation-header-buttons";
+import Categories from "./Categories";
  class CategoriesScreen extends Component {
     static navigationOptions = ({ navigation }) => {
         return {
@@ -22,9 +23,7 @@ import { HeaderButtons , Item } from "react-navigation-header-buttons";
     render() {
         return (
             <View style={styles.main}>
-                <Text>
-                Categories Screen
-                </Text>
+                <Categories props={this.props}/>
              
             </View>
         )
@@ -34,7 +33,7 @@ import { HeaderButtons , Item } from "react-navigation-header-buttons";
 const styles = StyleSheet.create({
     main :{
         flex :1,
-        alignItems :"center",
+       // alignItems :"center",
         justifyContent : "center",
     }
 });
