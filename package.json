@@ -19,6 +19,7 @@
     "react-native-dots-pagination": "^0.1.7",
     "react-native-easy-toast": "^1.2.0",
     "react-native-gesture-handler": "^1.5.3",
+    "react-native-image-base64": "^0.1.4",
     "react-native-permissions": "^2.0.9",
     "react-native-reanimated": "^1.4.0",
     "react-native-safe-area-context": "^0.6.2",

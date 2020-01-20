@@ -67,16 +67,14 @@ import Share from 'react-native-share';
 
 
       componentDidMount () {
-       
-        
-
-        
+ 
+     
       } 
 
-      ShareNow = ()=>{
+      ShareNow = (msg)=>{
         options = {
             title: 'Share via',
-            message: this.state.image,
+            message: msg,
          //   url: 'some share url',
           //  filename: this.state.image
             // social: Share.Social.WHATSAPP,
@@ -88,8 +86,8 @@ import Share from 'react-native-share';
         .catch((err) => { err && console.log(err); });
       }
 
-      copyText = ()=>{
-        () => Clipboard.setString(data.item.body);
+      copyText = (quote)=>{
+         Clipboard.setString(quote);
         this.refs.toast.show('Copied to Clipboard!');
     }
     saveImage = ()=>{
@@ -98,6 +96,7 @@ import Share from 'react-native-share';
       this.refs.toast.show('Saved to Gallery');
   }
     render() {
+      let quote = this.props.navigation.getParam("body");
         return (
 
            <View style={{backgroundColor:"#1a1a1a", flex:1}}>
@@ -108,7 +107,7 @@ import Share from 'react-native-share';
                  
                  <Image source={require("../assets/images/quotesIcon.png")} style={{width:50, height:50}} />
                 <Text style={{color:"white",fontFamily:"KulimPark-Light", fontSize:22, paddingHorizontal:20}} numberOfLines={8}>
-                The world is in greater peril from those who tolerate or encourage evil than from those who actually commit it.
+                {quote}
                 </Text>
                 <View style={{alignItems:"flex-end", marginRight:10, paddingBottom:10}}>
                     <Text style={{color:"#66ff66", paddingRight:10, fontSize:18, paddingBottom:10}}>
@@ -144,7 +143,9 @@ import Share from 'react-native-share';
                 </View>
               </View>
               <View style={{ height:"40%", alignItems:"center"}}>
-              <TouchableOpacity style={styles.button} onPress={this.ShareNow}>
+              <TouchableOpacity style={styles.button} onPress={()=>{
+                this.ShareNow(quote);
+              }}>
               <View style={{ width:"50%"}}>
                 <Text style={styles.buttonText}> Share Options</Text>
                 </View>
@@ -153,7 +154,9 @@ import Share from 'react-native-share';
                 </View>
                 
               </TouchableOpacity>
-              <TouchableOpacity style={styles.button}  onPress={this.copyText }>
+              <TouchableOpacity style={styles.button}  onPress={()=>{
+                this.copyText(quote);
+              } }>
               <View style={{ width:"50%"}}>
                 <Text style={styles.buttonText}> Copy as Text</Text>
                 </View>

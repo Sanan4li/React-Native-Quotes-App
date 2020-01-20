@@ -32,8 +32,8 @@ class QuotesListScreen extends Component{
           
     }
    
-    copyText = ()=>{
-        () => Clipboard.setString(data.item.body);
+    copyText = (text)=>{
+        Clipboard.setString(text);
         this.refs.toast.show('Copied to Clipboard!');
     }
 
@@ -93,7 +93,7 @@ class QuotesListScreen extends Component{
                 <TouchableOpacity
                 onPress={
                     ()=>{
-                        this.props.navigation.navigate("Detail");
+                        this.props.navigation.navigate("Detail", {body:data.item.body});
                     }
                 }
                 
@@ -133,7 +133,9 @@ class QuotesListScreen extends Component{
                 >
                 <Fontisto color={this.state.likeColor} size={20} name="heart" style={{alignSelf:"center"}} />
                 </TouchableOpacity>
-               <TouchableOpacity  style={{width:"25%",padding:5}} onPress={this.copyText }>
+               <TouchableOpacity  style={{width:"25%",padding:5}} onPress={()=>{
+                   this.copyText(data.item.body);
+               } }>
                <Icon name="copy" color="white"size={20} style={{alignSelf:"center"}}/>
                </TouchableOpacity>
                <TouchableOpacity  style={{ width:"25%",padding:5}} onPress={

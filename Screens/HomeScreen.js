@@ -2,10 +2,8 @@ import React, { Component } from 'react'
 import {StyleSheet, View, Image, ImageBackground, Dimensions, FlatList,  Text, TouchableOpacity} from 'react-native';
 import MyHeaderButton from "./MyHeaderButton";
 import { HeaderButtons , Item } from "react-navigation-header-buttons";
-import Entypo from "react-native-vector-icons";
 import Carousel, {ParallaxImage} from 'react-native-snap-carousel';
 import Categories from "./Categories";
-import QuoteDetailScreen from "./QuoteDetailScreen";
 import Dots from 'react-native-dots-pagination';import {PERMISSIONS, request} from 'react-native-permissions';
 state = {
  
@@ -60,7 +58,7 @@ state = {
            
                 <TouchableOpacity onPress={
                     ()=>{
-                       this.props.navigation.navigate("Detail");
+                       this.props.navigation.navigate("Detail", {body:item.body});
                     }
                 } style={styles.item}>
                 <View>
