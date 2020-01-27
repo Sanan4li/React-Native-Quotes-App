@@ -78,24 +78,6 @@ state = {
     }
 
 
-    componentDidMount  = ()=> {
-    //     // getting permission of storage
-    //     request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE).then(result => {
-    //      this.setState({
-    //        storagePermission : result
-    //      }), ()=>{
-    //        console.log(this.state.storagePermission);
-    //      };
-    //    });
-    //    request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE).then(result => {
-    //     this.setState({
-    //       storagePermission : result
-    //     }), ()=>{
-    //       console.log(this.state.storagePermission);
-    //     };
-    //   });
-       }
-
     render() {
 
         let devicesWidth = Dimensions.get("window").width;
@@ -104,7 +86,7 @@ state = {
             <View style={styles.main}>
               <View style={{height:"35%", width:"100%", backgroundColor:"#1a1a1a"}}>
                 <View style={{}}>
-                <Text style={{color:"white", fontFamily:"KulimPark-Regular", fontWeight:"bold", fontSize:16, marginLeft:22,padding:2}}>Popular Quotes</Text>
+                <Text style={styles.popularText}>Popular Quotes</Text>
                 </View> 
             <Carousel onSnapToItem={
                (index) => this.setState({currentPage:index})
@@ -155,6 +137,14 @@ const styles = StyleSheet.create({
         ...StyleSheet.absoluteFillObject,
         resizeMode: 'cover',
       },
+      popularText :{
+          color:"white", 
+          fontFamily:"KulimPark-Regular", 
+          fontWeight:"bold", 
+          fontSize:16, 
+          marginLeft:22,
+          padding:2
+        }
 });
 
 export default HomeScreen;

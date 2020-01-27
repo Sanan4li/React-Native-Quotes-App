@@ -10,6 +10,12 @@ class Categories extends Component{
             {id : "4", name : "Napoleon Hill", image : "https://www.toolshero.com/wp-content/uploads/2016/10/napoleon_hill_toolshero-e1505141183188.jpg"},
             {id : "5", name : "Elun Musk", image : "https://api.time.com/wp-content/uploads/2015/05/elon-musk.jpg?w=600&quality=85"},
             {id : "6", name : "Brian Tracy", image : "https://pbs.twimg.com/profile_images/967636564972134400/OiVIYrwE_400x400.jpg"},
+            {id : "7", name : "Dale Carnegie", image : "https://www.toolshero.com/wp-content/uploads/dale_carnegie_toolshero.png"},
+            {id : "8", name : "Anthony Robbins", image : "https://pbs.twimg.com/profile_images/732642288686391296/II4oQ8i_.jpg"},
+            {id : "9", name : "Abraham Lincon", image : "http://www.chicagonow.com/opinionated-woman/files/2018/06/Abraham_Lincoln_O-77_matte_collodion_print-1.jpg"},
+            {id : "10", name : "Robert Kiyosaki", image : "https://cdn.thecollegeinvestor.com/wp-content/uploads/2012/10/Robert-Kiyosaki.jpeg"},
+            {id : "11", name : "Jim Rohn", image : "https://leadgrowdevelop.com/wp-content/uploads/2015/08/Jim-Rohn.jpg"},
+            {id : "12", name : "Earl Nightingale", image : "https://alchetron.com/cdn/earl-nightingale-313d2b20-9c3c-4e67-8c27-ece0a3af9ee-resize-750.jpeg"},
         ]
     }
     // renderItemFunction = (data)=>{

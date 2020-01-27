@@ -11,9 +11,6 @@ class QuotesListScreen extends Component{
     static navigationOptions = ({ navigation }) => {
         return {
          title : navigation.getParam("title"),
-        
-               
-            
         };
       };
       
@@ -26,7 +23,7 @@ class QuotesListScreen extends Component{
           {id: "4",liked:"false",title : "Second", body: "No problem can be solved from the same level of consciousness that created it",image : "../assets/images/companyIcon.jpg" },
           {id: "5",liked:"false",title : "First", body: "Try not to become a man of success, but rather try to become a man of value.",image : "../assets/images/companyIcon.jpg" },
           ],
-          likeColor:"white",
+         
           modalVisible:false,
           currentQuote:null,
           
@@ -48,13 +45,12 @@ class QuotesListScreen extends Component{
           const granted = await PermissionsAndroid.request(
             PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
             {
-              title: "Cool Photo App Camera Permission",
-              message:
-                "Cool Photo App needs access to your camera " +
-                "so you can take awesome pictures.",
-              buttonNeutral: "Ask Me Later",
-              buttonNegative: "Cancel",
-              buttonPositive: "OK"
+                title: "Needs Storage Permissions",
+                message:
+                  "Quote App Needs Storage Permissions to Share Files.",
+                buttonNeutral: "Ask Me Later",
+                buttonNegative: "Cancel",
+                buttonPositive: "OK"
             }
           );
           if (granted === PermissionsAndroid.RESULTS.GRANTED) {
@@ -114,24 +110,8 @@ class QuotesListScreen extends Component{
                  </View>
                  <View style={{flexDirection:"row", justifyContent:"space-between", marginTop:30, width:"100%", padding:5}}>
                      
-                <TouchableOpacity style={{ width:"25%", padding:5,}}
-                     onPress={
-                        ()=>{ if(this.state.likeColor=="white"){
-                         this.setState({
-                             likeColor:"#ff1a75",
-                            
-                         });
-                        }
-                        else{
-                         this.setState({
-                             likeColor:"white",
-                         });
-                        }
-                            
-                        }
-                    }
-                >
-                <Fontisto color={this.state.likeColor} size={20} name="heart" style={{alignSelf:"center"}} />
+                <TouchableOpacity style={{ width:"25%", padding:5,}}>
+                <Fontisto color="white" size={20} name="heart" style={{alignSelf:"center"}} />
                 </TouchableOpacity>
                <TouchableOpacity  style={{width:"25%",padding:5}} onPress={()=>{
                    this.copyText(data.item.body);
@@ -150,7 +130,11 @@ class QuotesListScreen extends Component{
                }>
                <Icon name="download" color="white"size={20} style={{alignSelf:"center"}}/>
                </TouchableOpacity>
-               <TouchableOpacity  style={{ width:"25%",padding:5}}>
+               <TouchableOpacity  style={{ width:"25%",padding:5}} onPress={
+                   ()=>{
+                       this.props.navigation.navigate("Share", {body: data.item.body});
+                   }
+               }>
                <Icon name="share" color="white"size={20} style={{alignSelf:"center"}}/>       
             </TouchableOpacity> 
                 </View>
@@ -168,17 +152,12 @@ class QuotesListScreen extends Component{
               this.hideModal
           }>
             
-          <View style={{ backgroundColor:"#1a1a1a",
-          flex: 1,
-          flexDirection: 'column',
-         
-          width:"100%",
-          height:"70%",
-         }}>
+          <View style={styles.modal}>
                <View style={{backgroundColor:"#1a1a1a", height:"30%", justifyContent:"center", alignItems:"center"}}>
                   <Text style={{color:"white", fontSize:20}}>
                       Ad Will Be Placed Here
                   </Text>
+                  
               </View>
               <ViewShot ref="viewShot" options={{ format: "jpg", quality: 0.9 }}>
 
@@ -196,9 +175,7 @@ class QuotesListScreen extends Component{
                 </View>
                  </ViewShot>
                  <TouchableOpacity style={styles.button} onPress={
-
                     this.getPermissions
-                   
               }>
               <View style={{ width:"50%"}}>
                <Text style={styles.buttonText}>  Download Image </Text>
@@ -255,8 +232,14 @@ const styles = StyleSheet.create({
         alignContent:"center",
         fontSize:20,
         alignSelf:"center",
-       
-
+    },
+    modal:{ 
+            backgroundColor:"#1a1a1a",
+              flex: 1,
+              flexDirection: 'column',
+              width:"100%",
+              height:"70%",
     }
+  
 })
 export default QuotesListScreen;

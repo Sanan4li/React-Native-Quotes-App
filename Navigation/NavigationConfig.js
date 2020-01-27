@@ -17,6 +17,7 @@ import CategoriesScreen from "../Screens/CategoriesScreen";
 import CartScreen from "../Screens/CartScreen";
 import QuoteDetailScreen from "../Screens/QuoteDetailScreen";
 import QuotesListScreen from "../Screens/QuotesListScreen";
+import ShareScreen from "../Screens/ShareScreen";
 const defaultOptionsForStack =  {
     defaultNavigationOptions: {
        
@@ -73,6 +74,12 @@ const defaultOptionsForStack =  {
     },
     Cat : {
         screen : Categories,
+    },
+    Share : {
+        screen :ShareScreen,
+        navigationOptions : {
+            headerTitle : "Share Options"
+        }
     }
     // Cart : {
     //     screen : CartScreen
