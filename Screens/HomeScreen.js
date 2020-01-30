@@ -42,11 +42,11 @@ state = {
       state = {
           currentPage : 0,
         entries : [
-            {title : "First", body: "imagination is everything. It is the preview of life's coming attractions.",
+            {title : "First", body: "The secret of getting started is breaking your complex overwhelming tasks into small manageable tasks, and then starting on the first one.",
             image : "../assets/images/companyIcon.jpg" },
-            {title : "Second", body: "Life is like riding a bicycle. To keep your balance you must keep moving",image : "../assets/images/companyIcon.jpg" },
-            {title : "First", body: "The important thing is not to stop questioning. Curiosity has its own reason for existing",image : "../assets/images/companyIcon.jpg" },
-            {title : "Second", body: "No problem can be solved from the same level of consciousness that created it",image : "../assets/images/companyIcon.jpg" },
+            {title : "Second", body: "Life is like riding a bicycle. To keep your balance you must keep moving.",image : "../assets/images/companyIcon.jpg" },
+            {title : "First", body: "The important thing is not to stop questioning. Curiosity has its own reason for existing.",image : "../assets/images/companyIcon.jpg" },
+            {title : "Second", body: "No problem can be solved from the same level of consciousness that created it.",image : "../assets/images/companyIcon.jpg" },
             {title : "First", body: "Try not to become a man of success, but rather try to become a man of value.",image : "../assets/images/companyIcon.jpg" },
             ],
             storagePermission:null,
@@ -108,7 +108,7 @@ state = {
                  </Text>
              </View>
  
-                <Categories props={this.props}/>
+                <Categories props={this.props} color="#1a1a1a"/>
 
 
             </View>

@@ -6,6 +6,13 @@ import Toast, {DURATION} from 'react-native-easy-toast';
 import ViewShot from "react-native-view-shot";
 import Entypo from "react-native-vector-icons/Entypo";
 import CameraRoll from "@react-native-community/cameraroll";
+import {
+    AdMobBanner,
+    AdMobInterstitial,
+    PublisherBanner,
+    AdMobRewarded,
+  } from 'react-native-admob';
+import QuotesData from "./QuotesData";
 class QuotesListScreen extends Component{
 
     static navigationOptions = ({ navigation }) => {
@@ -23,10 +30,23 @@ class QuotesListScreen extends Component{
           {id: "4",liked:"false",title : "Second", body: "No problem can be solved from the same level of consciousness that created it",image : "../assets/images/companyIcon.jpg" },
           {id: "5",liked:"false",title : "First", body: "Try not to become a man of success, but rather try to become a man of value.",image : "../assets/images/companyIcon.jpg" },
           ],
-         
+          data : QuotesData,
+          selectedData: null,
           modalVisible:false,
           currentQuote:null,
+          currentQuoteBy:null
           
+    }
+    componentDidMount = ()=>{
+        let category = this.props.navigation.getParam("title");
+        let data = this.state.data.filter(
+            (d)=>{
+                return d.category==category
+            }
+        );
+        this.setState({
+            selectedData:data
+        });
     }
    
     copyText = (text)=>{
@@ -76,20 +96,20 @@ class QuotesListScreen extends Component{
   
   
     render(){
-       
+       //console.log(this.state.data[0].body);
         return(
             <View style={styles.main}>
-              
+             <View style={{height:"90%"}}> 
           <FlatList 
            
-           data={this.state.entries}
+           data={this.state.selectedData}
            renderItem={(data)=>{
               
             return(
                 <TouchableOpacity
                 onPress={
                     ()=>{
-                        this.props.navigation.navigate("Detail", {body:data.item.body});
+                        this.props.navigation.navigate("Detail", {body:data.item.body, by:data.item.by});
                     }
                 }
                 
@@ -105,7 +125,7 @@ class QuotesListScreen extends Component{
                   </View>
                   <View style={{alignItems:"flex-end", marginTop:5}}>
                   <Text style={{color:"#66ff66"}}>
-                      ~ Albert Einstien
+                   ~ {data.item.by}
                   </Text>
                  </View>
                  <View style={{flexDirection:"row", justifyContent:"space-between", marginTop:30, width:"100%", padding:5}}>
@@ -123,7 +143,8 @@ class QuotesListScreen extends Component{
                    ()=>{
                        this.setState({
                            modalVisible:true,
-                           currentQuote:data.item.body
+                           currentQuote:data.item.body,
+                           currentQuoteBy: data.item.by
                        })
                        
                    }
@@ -132,7 +153,7 @@ class QuotesListScreen extends Component{
                </TouchableOpacity>
                <TouchableOpacity  style={{ width:"25%",padding:5}} onPress={
                    ()=>{
-                       this.props.navigation.navigate("Share", {body: data.item.body});
+                       this.props.navigation.navigate("Share", {body: data.item.body, by:data.item.by});
                    }
                }>
                <Icon name="share" color="white"size={20} style={{alignSelf:"center"}}/>       
@@ -143,6 +164,18 @@ class QuotesListScreen extends Component{
               )
            }}
            />
+
+           </View>
+           <View style={{alignItems:"center", padding:5}}>
+           <AdMobBanner
+                adSize="Banner"
+                adUnitID="ca-app-pub-3940256099942544/6300978111"
+                testDevices={[AdMobBanner.simulatorId]}
+                onAdFailedToLoad={error => console.error(error)}
+/>
+
+           </View>
+
             <Modal
             
           animationType="slide"
@@ -154,10 +187,21 @@ class QuotesListScreen extends Component{
             
           <View style={styles.modal}>
                <View style={{backgroundColor:"#1a1a1a", height:"30%", justifyContent:"center", alignItems:"center"}}>
-                  <Text style={{color:"white", fontSize:20}}>
-                      Ad Will Be Placed Here
-                  </Text>
-                  
+                 
+                  <AdMobBanner
+                adSize="largeBanner"
+                adUnitID="ca-app-pub-3940256099942544/6300978111"
+                testDevices={[AdMobBanner.simulatorId]}
+                onAdFailedToLoad={error => console.error(error)}
+/>
+<AdMobBanner
+                adSize="Banner"
+                adUnitID="ca-app-pub-3940256099942544/6300978111"
+                testDevices={[AdMobBanner.simulatorId]}
+                onAdFailedToLoad={error => console.error(error)}
+/>
+
+
               </View>
               <ViewShot ref="viewShot" options={{ format: "jpg", quality: 0.9 }}>
 
@@ -169,7 +213,7 @@ class QuotesListScreen extends Component{
                </Text>
                 <View style={{alignItems:"flex-end", marginRight:10, paddingBottom:10}}>
                     <Text style={{color:"#66ff66", paddingRight:10, fontSize:18, paddingBottom:10}}>
-                        ~Albert Einstien
+                    ~ {this.state.currentQuoteBy}
                     </Text>
                 </View>
                 </View>
@@ -194,8 +238,17 @@ class QuotesListScreen extends Component{
                <Entypo name="squared-cross" color="white"size={25} style={{alignSelf:"center"}}/>
                </View>
               </TouchableOpacity>
+              
           </View>
-          
+          <View style={{backgroundColor:"#1a1a1a",alignItems:"center"}}>
+         <AdMobBanner
+                adSize="Banner"
+                adUnitID="ca-app-pub-3940256099942544/6300978111"
+                testDevices={[AdMobBanner.simulatorId]}
+                onAdFailedToLoad={error => console.error(error)}
+/>
+         </View>
+
         </Modal>
              <Toast ref="toast"  style={{backgroundColor:'#38b750'}}
                     position="top"

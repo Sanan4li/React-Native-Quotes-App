@@ -5,9 +5,15 @@ import Fontisto from "react-native-vector-icons/Fontisto";
 import ViewShot from "react-native-view-shot";
 import Share from 'react-native-share';
 import Entypo from "react-native-vector-icons/Entypo";
-
+import {
+    AdMobBanner,
+    AdMobInterstitial,
+    PublisherBanner,
+    AdMobRewarded,
+  } from 'react-native-admob';
 class ShareScreen extends Component{
     componentDidMount = ()=>{
+        
         this.getPermissions();
     }
     getPermissions = async ()=>{
@@ -67,6 +73,7 @@ class ShareScreen extends Component{
 
     render(){
         let quote = this.props.navigation.getParam("body");
+        let by = this.props.navigation.getParam("by");
         return(
             <View style={{ backgroundColor:"#1a1a1a",
             flex: 1,
@@ -74,10 +81,14 @@ class ShareScreen extends Component{
             width:"100%",
             height:"70%",
            }}>
-                <View style={{backgroundColor:"#1a1a1a", height:"30%", justifyContent:"center", alignItems:"center"}}>
-                    <Text style={{color:"white", fontSize:20}}>
-                        Ad Will Be Placed Here
-                    </Text>
+                <View style={{backgroundColor:"#1a1a1a", height:"25%", justifyContent:"center", alignItems:"center"}}>
+                <AdMobBanner
+                adSize="largeBanner"
+                adUnitID="ca-app-pub-3940256099942544/6300978111"
+                testDevices={[AdMobBanner.simulatorId]}
+                onAdFailedToLoad={error => console.error(error)}
+/>
+
                 </View>
                 <ViewShot ref="viewShot" options={{ result: "base64", quality: 0.9 }}>
               
@@ -89,7 +100,7 @@ class ShareScreen extends Component{
                  </Text>
                   <View style={{alignItems:"flex-end", marginRight:10, paddingBottom:10}}>
                       <Text style={{color:"#66ff66", paddingRight:10, fontSize:18, paddingBottom:10}}>
-                          ~Albert Einstien
+                        ~ {by}
                       </Text>
                   </View>
                  

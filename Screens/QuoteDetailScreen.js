@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {View, StyleSheet, Text, Image, Clipboard, ImageBackground, Modal, TouchableOpacity,PermissionsAndroid } from "react-native";
+import {View, StyleSheet, Text, AppState ,Image, Clipboard, ImageBackground, Modal, TouchableOpacity,PermissionsAndroid } from "react-native";
 import MyHeaderButton from "./MyHeaderButton";
 import CameraRoll from "@react-native-community/cameraroll";
 import MyHeaderButtonNew from "./MyHeaderButtonNew";
@@ -11,6 +11,12 @@ import Toast, {DURATION} from 'react-native-easy-toast';
 import Share from 'react-native-share';
 import Entypo from "react-native-vector-icons/Entypo";
 import PushNotification from 'react-native-push-notification';
+import {
+    AdMobBanner,
+    AdMobInterstitial,
+    PublisherBanner,
+    AdMobRewarded,
+  } from 'react-native-admob'
  class QuoteDetailScreen extends Component {
     static navigationOptions = ({ navigation }) => {
         return {
@@ -34,8 +40,15 @@ import PushNotification from 'react-native-push-notification';
         image :null,
         modalVisible:false,
         currentQuote:null,
-      }
 
+      }
+      componentDidMount() {
+
+        AppState.addEventListener('change', this.handleAppStateChange);
+      }
+      componentWillUnmount() {
+        AppState.removeEventListener('change', this.handleAppStateChange);
+      };
       getPermissions = async ()=>{
         try {
           const granted = await PermissionsAndroid.request(
@@ -72,11 +85,25 @@ import PushNotification from 'react-native-push-notification';
           playSound: false, // (optional) default: true
           soundName: 'default', // (optional) Sound to play when the notification is shown. Value of 'default' plays the default sound. It can be set to a custom sound such as 'android.resource://com.xyz/raw/my_sound'. It will look for the 'my_sound' audio file in 'res/raw' directory and play it. default: 'default' (default sound is played)
           number: '10', // (optional) Valid 32 bit integer specified as string. default: none (Cannot be zero)
-          repeatType: 'day', // (optional) Repeating interval. Check 'Repeating Notifications' section for more info.
+         // repeatType: 'day', // (optional) Repeating interval. Check 'Repeating Notifications' section for more info.
           actions: '["OK", "Thanks"]',  // (Android only) See the doc for notification actions to
           largeIcon: "icon", // (optional) default: "ic_launcher"
           smallIcon: "icon", 
         });
+      
+      };
+
+
+      handleAppStateChange(appState) {
+        if (appState === 'background') {
+          console.log("App is in Background");
+          // Schedule a notification
+          PushNotification.localNotificationSchedule({
+            title: "Quote of The Day", // (optional)
+           message: 'Scheduled delay notification message', // (required)
+           date: new Date(Date.now() + (10 * 1000)) // in 3 secs
+         });
+        }
       };
       copyText = (quote)=>{
          Clipboard.setString(quote);
@@ -89,12 +116,23 @@ import PushNotification from 'react-native-push-notification';
   }
   
     render() {
+      let sharedNumber = Math.floor(Math.random() * (10 - 1 + 1) + 1);
+      let likesNumber = Math.floor(Math.random() * (999 - 1 + 1) + 1);
       let quote = this.props.navigation.getParam("body"); // 
+      let by = this.props.navigation.getParam("by");
         return (
 
            <View style={{backgroundColor:"#1a1a1a", flex:1}}>
                 
-              <View style={{ height:"60%"}}>
+              <View style={{ height:"62%"}}>
+                <View style={{alignItems:"center"}}>
+                <AdMobBanner
+                adSize="Banner"
+                adUnitID="ca-app-pub-3940256099942544/6300978111"
+                testDevices={[AdMobBanner.simulatorId]}
+                onAdFailedToLoad={error => console.error(error)}
+/>
+                </View>
               <ViewShot ref="viewShot" options={{  format: "jpg" , quality: 0.9 }}>
               <View style={{marginTop:"5%", padding:10}}>
                  
@@ -104,14 +142,14 @@ import PushNotification from 'react-native-push-notification';
                 </Text>
                 <View style={{alignItems:"flex-end", marginRight:10, paddingBottom:10}}>
                     <Text style={styles.author}>
-                        ~Albert Einstien
+                      ~ {by}
                     </Text>
                 </View>
                 </View>
             </ViewShot>
                 <View style={{flexDirection:"row", marginTop:5}}>
                    <Icon color="white" size={17} name="share-alt" style={{marginTop:4, marginLeft:20}}/>
-                    <Text style={{color:"white", fontSize:16, marginLeft:10}}>123 Shared</Text>
+                    <Text style={{color:"white", fontSize:16, marginLeft:10}}>{sharedNumber}K Shared</Text>
                    <TouchableOpacity style={{flexDirection:"row"}}
                    onPress={
                        ()=>{ if(this.state.likeColor=="white"){
@@ -131,14 +169,14 @@ import PushNotification from 'react-native-push-notification';
                    }
                    >
                    <Fontisto color={this.state.likeColor} size={17} name="heart" style={{marginTop:4, marginLeft:20}}/>
-                 <Text style={{color:this.state.likeColor, fontSize:16, marginLeft:10}}>13 {this.state.likeText}</Text>
+                 <Text style={{color:this.state.likeColor, fontSize:16, marginLeft:10}}>{likesNumber} {this.state.likeText}</Text>
                    </TouchableOpacity>
                 </View>
               </View>
               <View style={{ height:"40%", alignItems:"center"}}>
               <TouchableOpacity style={styles.button} onPress={
                 ()=>{
-                  this.props.navigation.navigate("Share", {body: quote});
+                  this.props.navigation.navigate("Share", {body: quote, by:by});
                 }
               }>
               <View style={{ width:"50%"}}>
@@ -170,6 +208,10 @@ import PushNotification from 'react-native-push-notification';
                <Icon name="download" color="white"size={25} style={{alignSelf:"center"}}/>
                </View>
               </TouchableOpacity>
+              <View style={{alignItems:"center", padding:5}}>
+          
+
+           </View>
               </View>
 
              
