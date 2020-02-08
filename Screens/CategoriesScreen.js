@@ -3,6 +3,7 @@ import {StyleSheet, View, Text , Button} from 'react-native';
 import MyHeaderButton from "./MyHeaderButton";
 import { HeaderButtons , Item } from "react-navigation-header-buttons";
 import Categories from "./Categories";
+import SendNotification from "./SendNotification";
 import {
     AdMobBanner,
     AdMobInterstitial,
@@ -30,6 +31,7 @@ import {
        // this.props.navigation.setParam({color:"white"});
         return (
             <View style={styles.main}>
+                <SendNotification/>
                <View style={{height:"90%"}}>
                <Categories props={this.props} color="white"/>
              
@@ -37,7 +39,7 @@ import {
                <View style={{alignItems:"center", padding:5}}>
            <AdMobBanner
                 adSize="Banner"
-                adUnitID="ca-app-pub-3940256099942544/6300978111"
+                adUnitID="ca-app-pub-3898799702868990/4850565259"
                 testDevices={[AdMobBanner.simulatorId]}
                 onAdFailedToLoad={error => console.error(error)}
 />

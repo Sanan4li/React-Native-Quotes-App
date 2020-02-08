@@ -191,7 +191,7 @@ const Data = [
     {id:"188", category:"Norman Vincent Peale", body : "The more you venture to live greatly, the more you will find within you what it takes to get on top of things and stay there.", by : "Norman Vincent Peale" },
     {id:"189", category:"Norman Vincent Peale", body : "If you want things to be different, perhaps the answer is to become different yourself.", by : "Norman Vincent Peale" },
     {id:"190", category:"Norman Vincent Peale", body : "Believe that you are bigger than your difficulties, for you are, indeed.", by : "Norman Vincent Peale" },
-    {id:"191", category:"Ralph Waldo Emerson", body : "Beware when the great God lets loose a thinker on this planet.", by : "Ralph Waldo Emerson" },
+    {id:"191", category:"Ralph Waldo Emerson", body : "Be aware when the great God lets loose a thinker on this planet.", by : "Ralph Waldo Emerson" },
     {id:"192", category:"Ralph Waldo Emerson", body : "Character is higher than intellect... A great soul will be strong to live, as well as to think.", by : "Ralph Waldo Emerson" },
     {id:"193", category:"Ralph Waldo Emerson", body : "Do not be too timid and squeamish about your actions. All life is an experiment.", by : "Ralph Waldo Emerson" },
     {id:"194", category:"Ralph Waldo Emerson", body : "Do not go where the path may lead, go instead where there is no path and leave a trail.", by : "Ralph Waldo Emerson" },
@@ -254,7 +254,7 @@ const Data = [
     {id:"251", category:"Thomas Jefferson", body : "It is my principle that the will of the majority should always prevail.", by : "Thomas Jefferson" },
     {id:"252", category:"Thomas Jefferson", body : "When a man assumes a public trust, he should consider himself as public property.", by : "Thomas Jefferson" },
     {id:"253", category:"Thomas Jefferson", body : "The man who fears no truths has nothing to fear from lies.", by : "Thomas Jefferson" },
-    {id:"254", category:"Thomas Jefferson", body : "Nothing can stop the man with the right mental attitude from achieving his goal; nothing on earth can help the man with the wrong mental attitude.", by : "Thomas Jefferson" },
+    {id:"254", category:"Thomas Jefferson", body : "A coward is much more exposed to quarrels than a man of spirit.", by : "Thomas Jefferson" },
     {id:"255", category:"Thomas Jefferson", body : "I'm a great believer in luck, and I find the harder I work the more I have of it.", by : "Thomas Jefferson" },
     {id:"256", category:"Thomas Jefferson", body : "Never spend your money before you have it.", by : "Thomas Jefferson" },
     {id:"257", category:"Thomas Jefferson", body : "Never trouble another for what you can do for yourself.", by : "Thomas Jefferson" },
@@ -403,14 +403,12 @@ const Data = [
     {id:"403", category:"Work", body : "There are no shortcuts to any place worth going.", by : "Beverly Sills" },
     {id:"404", category:"Work", body : "He who is afraid of doing too much always does too little.", by : "German proverb" },
     {id:"396", category:"Work", body : "Unless a man undertakes more than he possibly can do, he will never do all he can do.", by : "Henry Drummond" },
-    {id:"396", category:"Work", body : "When we do more than we are paid to do, eventually we will be paid more for what we do.", by : "Zig Ziglar" },
-    {id:"396", category:"Work", body : "Opportunity is missed by most people because it is dressed in overalls and looks like work.", by : "Thomas Edison" },
-    {id:"396", category:"Work", body : "The best preparation for good work tomorrow is good work today.", by : "Elbert Hubbard" },
-    {id:"396", category:"Work", body : "People forget how fast you did a job, but they remember how well you did it.", by : "Howard W. Newton" },
-    {id:"396", category:"Responsibility", body : "", by : "" },
-    {id:"396", category:"Responsibility", body : "", by : "" },
-    {id:"396", category:"Responsibility", body : "", by : "" },
-    
+    {id:"397", category:"Work", body : "When we do more than we are paid to do, eventually we will be paid more for what we do.", by : "Zig Ziglar" },
+    {id:"398", category:"Work", body : "Opportunity is missed by most people because it is dressed in overalls and looks like work.", by : "Thomas Edison" },
+    {id:"399", category:"Work", body : "The best preparation for good work tomorrow is good work today.", by : "Elbert Hubbard" },
+    {id:"400", category:"Work", body : "People forget how fast you did a job, but they remember how well you did it.", by : "Howard W. Newton" },
+    {id:"401", category:"Responsibility", body : "", by : "" },
+   
     
 ]
 

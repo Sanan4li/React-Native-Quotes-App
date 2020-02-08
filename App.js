@@ -5,17 +5,48 @@ import {
   StatusBar,
 } from 'react-native';
 import AppContainer from "./Navigation/NavigationConfig";
+import {init} from "./Screens/Database";
+import SplashScreen from "./Screens/SplashScreen";
 
-// }
-// async function requestAll() {
-//   const cameraStatus = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
-//   const contactsStatus = await request(PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE);
-//   return {cameraStatus, contactsStatus};
-// }
-const App =  () => {
-  return (
-   <AppContainer/>
 
-  )
+
+class  App extends React.Component {
+  state = {
+    loaded:false,
+  }
+  componentDidMount = ()=>{
+    init();
+    setTimeout(this.loadApp,100);
+
+  }
+  loadApp = ()=>{
+    this.setState({
+      loaded:true
+    });
+  }
+  render(){
+   
+    let component = <SplashScreen/>
+    if(this.state.loaded){
+      component = <AppContainer/>
+    }
+    return (
+      <View style={{backgroundColor:"#1a1a1a", flex:1}}>
+        {component}
+      </View>
+      
+     
+     )
+  }
+ 
   }
 export default App;
+
+
+
+
+
+
+
+
+

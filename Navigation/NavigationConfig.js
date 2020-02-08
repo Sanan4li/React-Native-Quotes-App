@@ -18,6 +18,7 @@ import CartScreen from "../Screens/CartScreen";
 import QuoteDetailScreen from "../Screens/QuoteDetailScreen";
 import QuotesListScreen from "../Screens/QuotesListScreen";
 import ShareScreen from "../Screens/ShareScreen";
+import Contact from "../Screens/Contact";
 const defaultOptionsForStack =  {
     defaultNavigationOptions: {
        
@@ -98,6 +99,18 @@ const FavStack = createStackNavigator({
           headerTitle : "Favourites"
       }
     },
+    Detail : {
+        screen : QuoteDetailScreen,
+        navigationOptions : {
+          headerTitle : ""
+      }
+    },
+    Share : {
+        screen :ShareScreen,
+        navigationOptions : {
+            headerTitle : "Share Options"
+        }
+    }
 
 //     Cart : {
 //         screen : CartScreen
@@ -113,13 +126,24 @@ const CartStack = createStackNavigator({
     Cart : {
         screen : CartScreen,
         navigationOptions:{
-            headerTitle : "About"
+            headerTitle : "About Developer"
         }
     },
 }, defaultOptionsForStack
 
 );     
 
+const ContactStack = createStackNavigator({
+   
+    Cart : {
+        screen : Contact,
+        navigationOptions:{
+            headerTitle : "Contact"
+        }
+    },
+}, defaultOptionsForStack
+
+);     
 
 
 
@@ -152,14 +176,24 @@ const CartStack = createStackNavigator({
                    }
         }
         },
-    About : {
-        screen : CartStack,
+        "About" : {
+            screen : CartStack,
+                navigationOptions : {
+                    drawerIcon: ({ tintColor }) => {
+                        return   <Icon name="info-circle" size={20} color={tintColor} />
+                       }
+            }
+            },
+        
+    "Contact" : {
+        screen : ContactStack,
             navigationOptions : {
                 drawerIcon: ({ tintColor }) => {
-                    return   <Icon name="info-circle" size={20} color={tintColor} />
+                    return   <Entypo name="mail" size={20} color={tintColor} />
                    }
         }
         },
+    
     },
     {
         contentOptions: {
@@ -172,7 +206,7 @@ const CartStack = createStackNavigator({
          <SafeAreaView style={{backgroundColor:"#1a1a1a", color:"white", flex:1}}>
              <View style={{height: 100,alignItems: 'center', justifyContent: 'center'}}>
              <ImageBackground resizeMode="cover" source={require("../assets/images/qu.jpg")} style={{width: '100%', height: '100%'}}>
-                <Text style={{fontSize:20, color:"white", textAlign : "left", marginTop:20, marginLeft:50, fontFamily:"BebasNeue-Regular"}}>Daily</Text>
+                <Text style={{fontSize:20, color:"white", textAlign : "left", marginTop:20, marginLeft:50, fontFamily:"BebasNeue-Regular"}}>Success</Text>
             </ImageBackground>
              </View>
            <ScrollView>

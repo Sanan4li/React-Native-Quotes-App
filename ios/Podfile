@@ -36,6 +36,8 @@ target 'ReactNativeTemplate' do
 
   pod 'RNFirebase', :path => '../node_modules/react-native-firebase'
 
+  pod 'react-native-netinfo', :path => '../node_modules/@react-native-community/netinfo'
+
   target 'ReactNativeTemplateTests' do
     inherit! :search_paths
     # Pods for testing

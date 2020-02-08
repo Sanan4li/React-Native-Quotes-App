@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {StyleSheet, View, Image, TouchableOpacity, FlatList, Clipboard , Text, Modal, PermissionsAndroid, Alert} from 'react-native';
+import {StyleSheet, View, Image, TouchableOpacity, FlatList, Alert, Clipboard , Text, Modal, PermissionsAndroid, } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Fontisto from "react-native-vector-icons/Fontisto";
 import Toast, {DURATION} from 'react-native-easy-toast';
@@ -13,6 +13,9 @@ import {
     AdMobRewarded,
   } from 'react-native-admob';
 import QuotesData from "./QuotesData";
+import SendNotification from "./SendNotification";
+import { openDatabase } from 'react-native-sqlite-storage';
+
 class QuotesListScreen extends Component{
 
     static navigationOptions = ({ navigation }) => {
@@ -22,14 +25,7 @@ class QuotesListScreen extends Component{
       };
       
       state = {
-      entries : [
-          {id: "1", liked:"false", title : "First", body: "imagination is everything. It is the preview of life's coming attractions.",
-          image : "../assets/images/companyIcon.jpg" },
-          {id: "2",liked:"false",title : "Second", body: "Life is like riding a bicycle. To keep your balance you must keep moving",image : "../assets/images/companyIcon.jpg" },
-          {id: "3",liked:"false",title : "First", body: "The important thing is not to stop questioning. Curiosity has its own reason for existing",image : "../assets/images/companyIcon.jpg" },
-          {id: "4",liked:"false",title : "Second", body: "No problem can be solved from the same level of consciousness that created it",image : "../assets/images/companyIcon.jpg" },
-          {id: "5",liked:"false",title : "First", body: "Try not to become a man of success, but rather try to become a man of value.",image : "../assets/images/companyIcon.jpg" },
-          ],
+     
           data : QuotesData,
           selectedData: null,
           modalVisible:false,
@@ -67,7 +63,7 @@ class QuotesListScreen extends Component{
             {
                 title: "Needs Storage Permissions",
                 message:
-                  "Quote App Needs Storage Permissions to Share Files.",
+                  "Quote App Needs Storage Permissions to Download/Share Files.",
                 buttonNeutral: "Ask Me Later",
                 buttonNegative: "Cancel",
                 buttonPositive: "OK"
@@ -89,6 +85,26 @@ class QuotesListScreen extends Component{
         }
       }
 
+      insert = (id, category, body, by)=>{
+      
+        var db = openDatabase({ name: 'test.db' });
+        this.refs.toast.show('Added to Favourites!');
+              db.transaction(function(tx) {
+                tx.executeSql(
+                  'INSERT INTO fav (id, category , body, by) VALUES (?,?,?,?)',
+                  [id, category, body, by],
+                  (tx, results) => {
+                    console.log('Results', results.rowsAffected);
+                    if (results.rowsAffected > 0) {
+                       console.log("Inserted");
+                    } else {
+                     console.log("Error in Inserting Data");
+                    }
+                  }
+                );
+              });
+            } 
+    
 
 
 
@@ -99,7 +115,9 @@ class QuotesListScreen extends Component{
        //console.log(this.state.data[0].body);
         return(
             <View style={styles.main}>
+                <SendNotification/>
              <View style={{height:"90%"}}> 
+
           <FlatList 
            
            data={this.state.selectedData}
@@ -109,7 +127,7 @@ class QuotesListScreen extends Component{
                 <TouchableOpacity
                 onPress={
                     ()=>{
-                        this.props.navigation.navigate("Detail", {body:data.item.body, by:data.item.by});
+                        this.props.navigation.navigate("Detail", {id:data.item.id, category:data.item.category,body:data.item.body, by:data.item.by});
                     }
                 }
                 
@@ -130,7 +148,13 @@ class QuotesListScreen extends Component{
                  </View>
                  <View style={{flexDirection:"row", justifyContent:"space-between", marginTop:30, width:"100%", padding:5}}>
                      
-                <TouchableOpacity style={{ width:"25%", padding:5,}}>
+                <TouchableOpacity style={{ width:"25%", padding:5,}}
+                onPress={
+                    ()=>{
+                        this.insert(data.item.id,data.item.category, data.item.body, data.item.by);
+                    }
+                }
+                >
                 <Fontisto color="white" size={20} name="heart" style={{alignSelf:"center"}} />
                 </TouchableOpacity>
                <TouchableOpacity  style={{width:"25%",padding:5}} onPress={()=>{
@@ -169,7 +193,7 @@ class QuotesListScreen extends Component{
            <View style={{alignItems:"center", padding:5}}>
            <AdMobBanner
                 adSize="Banner"
-                adUnitID="ca-app-pub-3940256099942544/6300978111"
+                adUnitID="ca-app-pub-3898799702868990/4850565259"
                 testDevices={[AdMobBanner.simulatorId]}
                 onAdFailedToLoad={error => console.error(error)}
 />
@@ -240,14 +264,7 @@ class QuotesListScreen extends Component{
               </TouchableOpacity>
               
           </View>
-          <View style={{backgroundColor:"#1a1a1a",alignItems:"center"}}>
-         <AdMobBanner
-                adSize="Banner"
-                adUnitID="ca-app-pub-3940256099942544/6300978111"
-                testDevices={[AdMobBanner.simulatorId]}
-                onAdFailedToLoad={error => console.error(error)}
-/>
-         </View>
+         
 
         </Modal>
              <Toast ref="toast"  style={{backgroundColor:'#38b750'}}

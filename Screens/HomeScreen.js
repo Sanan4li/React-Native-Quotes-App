@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
-import {StyleSheet, View, Image, ImageBackground, Dimensions, FlatList,  Text, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, Image, Alert, Dimensions, FlatList,  Text, TouchableOpacity, Button} from 'react-native';
 import MyHeaderButton from "./MyHeaderButton";
 import { HeaderButtons , Item } from "react-navigation-header-buttons";
 import Carousel, {ParallaxImage} from 'react-native-snap-carousel';
 import Categories from "./Categories";
 import Dots from 'react-native-dots-pagination';import {PERMISSIONS, request} from 'react-native-permissions';
-state = {
- 
-}
+import { openDatabase } from 'react-native-sqlite-storage';
+import PushNotification from 'react-native-push-notification';
+import SendNotification from "./SendNotification";
 
  class HomeScreen extends Component {
      
@@ -42,14 +42,14 @@ state = {
       state = {
           currentPage : 0,
         entries : [
-            {title : "First", body: "The secret of getting started is breaking your complex overwhelming tasks into small manageable tasks, and then starting on the first one.",
-            image : "../assets/images/companyIcon.jpg" },
-            {title : "Second", body: "Life is like riding a bicycle. To keep your balance you must keep moving.",image : "../assets/images/companyIcon.jpg" },
-            {title : "First", body: "The important thing is not to stop questioning. Curiosity has its own reason for existing.",image : "../assets/images/companyIcon.jpg" },
-            {title : "Second", body: "No problem can be solved from the same level of consciousness that created it.",image : "../assets/images/companyIcon.jpg" },
-            {title : "First", body: "Try not to become a man of success, but rather try to become a man of value.",image : "../assets/images/companyIcon.jpg" },
+            {id:"2", category:"Albert Einstein", body : "No problem can be solved from the same level of consciousness that created it.", by : "Albert Einstein" },
+            {id:"376", category:"Preparation", body : "In all things, success depends upon previous preparation, and without such preparation, there is failure.", by : "Confucius" },
+            {id:"346", category:"Think Big", body : "If you have the will to win, you have achieved half your success; if you don’t, you have achieved half your failure.", by : "David V.A. Ambrose" },
+            {id:"57", category:"Anthony Robbins", body : "It's not the events of our lives that shape us, but our beliefs as to what those events mean.", by : "Anthony Robbins" },
+            {id:"80", category:"Dale Carnegie", body : "Remember happiness doesn't depend on who you are or what you have; it depends solely upon what you think.", by : "Dale Carnegie" },
             ],
             storagePermission:null,
+           
       }
 
 
@@ -58,18 +58,18 @@ state = {
            
                 <TouchableOpacity onPress={
                     ()=>{
-                       this.props.navigation.navigate("Detail", {body:item.body});
+                       this.props.navigation.navigate("Detail", {id:item.id, category:item.category,body:item.body, by:item.by});
                     }
                 } style={styles.item}>
                 <View>
                  <Image source={require("../assets/images/quotesIcon.png")} style={{width:30, height:30}} />
-                <Text style={{color:"white",fontFamily:"KulimPark-Light", fontSize:17}} numberOfLines={8}>
+                <Text style={{color:"white",fontFamily:"KulimPark-Light", fontSize:19}} numberOfLines={8}>
                     { item.body } 
                 </Text>
                 </View>
                 <View style={{alignItems:"flex-end"}}>
                     <Text style={{color:"#66ff66"}}>
-                        ~Albert Einstien
+                       ~ {item.by}
                     </Text>
                 </View>
             </TouchableOpacity>
@@ -77,13 +77,34 @@ state = {
         );
     }
 
-
+    componentDidMount = ()=>{
+        PushNotification.configure({
+            // (required) Called when a remote or local notification is opened or received
+            onNotification: notification => {
+              if (notification.action === "View") {
+              
+                console.log("View Clicked");
+               
+                PushNotification.cancelAllLocalNotifications();
+                this.props.navigation.navigate("Detail", {body:notification.quoteInfo.body, by:notification.quoteInfo.by});
+             
+              } 
+            },
+            popInitialNotification: true,
+            requestPermissions: true
+          });
+          
+    }
+    
+   
     render() {
+        
 
         let devicesWidth = Dimensions.get("window").width;
         let devicesHeight = Dimensions.get("window").height;
         return (
             <View style={styles.main}>
+              <SendNotification/>
               <View style={{height:"35%", width:"100%", backgroundColor:"#1a1a1a"}}>
                 <View style={{}}>
                 <Text style={styles.popularText}>Popular Quotes</Text>
@@ -107,7 +128,21 @@ state = {
                      More Quotes
                  </Text>
              </View>
- 
+                {/* <Button title="INSERT" onPress={this.insert} />
+                <Button title="DELETE" onPress={this.deleteUser} />
+                <FlatList
+          data={this.state.FlatListItems}
+         
+         
+          renderItem={({ item }) => (
+            <View key={item.user_id} style={{ backgroundColor: 'white', padding: 20 }}>
+              <Text>Id: {item.user_id}</Text>
+              <Text>Name: {item.user_name}</Text>
+              <Text>Contact: {item.user_contact}</Text>
+              <Text>Address: {item.user_address}</Text>
+            </View>
+          )}
+        /> */}
                 <Categories props={this.props} color="#1a1a1a"/>
 
 

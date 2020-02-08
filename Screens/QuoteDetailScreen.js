@@ -8,15 +8,15 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import Fontisto from "react-native-vector-icons/Fontisto";
 import ViewShot from "react-native-view-shot";
 import Toast, {DURATION} from 'react-native-easy-toast';
-import Share from 'react-native-share';
-import Entypo from "react-native-vector-icons/Entypo";
-import PushNotification from 'react-native-push-notification';
+import SendNotification from "./SendNotification";
+
 import {
     AdMobBanner,
     AdMobInterstitial,
     PublisherBanner,
     AdMobRewarded,
-  } from 'react-native-admob'
+  } from 'react-native-admob';
+import { openDatabase } from 'react-native-sqlite-storage';
  class QuoteDetailScreen extends Component {
     static navigationOptions = ({ navigation }) => {
         return {
@@ -42,13 +42,8 @@ import {
         currentQuote:null,
 
       }
-      componentDidMount() {
-
-        AppState.addEventListener('change', this.handleAppStateChange);
-      }
-      componentWillUnmount() {
-        AppState.removeEventListener('change', this.handleAppStateChange);
-      };
+      
+      
       getPermissions = async ()=>{
         try {
           const granted = await PermissionsAndroid.request(
@@ -56,7 +51,7 @@ import {
             {
               title: "Needs Storage Permissions",
               message:
-                "Quote App Needs Storage Permissions to Share Files.",
+                "Quote App Needs Storage Permissions to Download/Share Files.",
               buttonNeutral: "Ask Me Later",
               buttonNegative: "Cancel",
               buttonPositive: "OK"
@@ -68,7 +63,7 @@ import {
            
               CameraRoll.saveToCameraRoll(uri);
               this.refs.toast.show('Saved to Gallery');
-              this.sendNotification();
+             
             });
           } else {
             this.refs.toast.show('Saving Failed! Storage Permission Required.');
@@ -78,33 +73,10 @@ import {
         }
       }
 
-      sendNotification() {
-        PushNotification.localNotification({
-          title: "Image Saved!", // (optional)
-          message: "This Quote has been saved as Image in Your Gallery", // (required)
-          playSound: false, // (optional) default: true
-          soundName: 'default', // (optional) Sound to play when the notification is shown. Value of 'default' plays the default sound. It can be set to a custom sound such as 'android.resource://com.xyz/raw/my_sound'. It will look for the 'my_sound' audio file in 'res/raw' directory and play it. default: 'default' (default sound is played)
-          number: '10', // (optional) Valid 32 bit integer specified as string. default: none (Cannot be zero)
-         // repeatType: 'day', // (optional) Repeating interval. Check 'Repeating Notifications' section for more info.
-          actions: '["OK", "Thanks"]',  // (Android only) See the doc for notification actions to
-          largeIcon: "icon", // (optional) default: "ic_launcher"
-          smallIcon: "icon", 
-        });
-      
-      };
+     
 
 
-      handleAppStateChange(appState) {
-        if (appState === 'background') {
-          console.log("App is in Background");
-          // Schedule a notification
-          PushNotification.localNotificationSchedule({
-            title: "Quote of The Day", // (optional)
-           message: 'Scheduled delay notification message', // (required)
-           date: new Date(Date.now() + (10 * 1000)) // in 3 secs
-         });
-        }
-      };
+     
       copyText = (quote)=>{
          Clipboard.setString(quote);
         this.refs.toast.show('Copied to Clipboard!');
@@ -114,21 +86,44 @@ import {
       CameraRoll.saveToCameraRoll(this.state.image);
       this.refs.toast.show('Saved to Gallery');
   }
-  
+
+  insert = (id, category, body, by)=>{
+      console.log("test");
+    var db = openDatabase({ name: 'test.db' });
+    this.refs.toast.show('Added to Favourites!');
+          db.transaction(function(tx) {
+            tx.executeSql(
+              'INSERT INTO fav (id, category , body, by) VALUES (?,?,?,?)',
+              [id, category, body, by],
+              (tx, results) => {
+                console.log('Results', results.rowsAffected);
+                if (results.rowsAffected > 0) {
+                   console.log("Inserted");
+                } else {
+                 console.log("Error in Inserting Data");
+                }
+              }
+            );
+          });
+        } 
+
+
     render() {
-      let sharedNumber = Math.floor(Math.random() * (10 - 1 + 1) + 1);
-      let likesNumber = Math.floor(Math.random() * (999 - 1 + 1) + 1);
+      let sharedNumber = Math.floor(Math.random() * (999 - 1 + 1) + 1);
+      let likesNumber = Math.floor(Math.random() * (500 - 1 + 1) + 1);
       let quote = this.props.navigation.getParam("body"); // 
       let by = this.props.navigation.getParam("by");
+      let id = this.props.navigation.getParam("id");
+      let category = this.props.navigation.getParam("category");
         return (
 
            <View style={{backgroundColor:"#1a1a1a", flex:1}}>
-                
+                <SendNotification/>
               <View style={{ height:"62%"}}>
                 <View style={{alignItems:"center"}}>
                 <AdMobBanner
                 adSize="Banner"
-                adUnitID="ca-app-pub-3940256099942544/6300978111"
+                adUnitID="ca-app-pub-3898799702868990/4850565259"
                 testDevices={[AdMobBanner.simulatorId]}
                 onAdFailedToLoad={error => console.error(error)}
 />
@@ -149,10 +144,11 @@ import {
             </ViewShot>
                 <View style={{flexDirection:"row", marginTop:5}}>
                    <Icon color="white" size={17} name="share-alt" style={{marginTop:4, marginLeft:20}}/>
-                    <Text style={{color:"white", fontSize:16, marginLeft:10}}>{sharedNumber}K Shared</Text>
+                    <Text style={{color:"white", fontSize:16, marginLeft:10}}>{sharedNumber} Shared</Text>
                    <TouchableOpacity style={{flexDirection:"row"}}
                    onPress={
                        ()=>{ if(this.state.likeColor=="white"){
+                        this.insert(id,category,quote,by);
                         this.setState({
                             likeColor:"#ff1a75",
                             likeText:"Liked"
@@ -163,6 +159,7 @@ import {
                             likeColor:"white",
                             likeText:"Likes"
                         });
+                       
                        }
                            
                        }

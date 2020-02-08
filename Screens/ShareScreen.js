@@ -5,6 +5,7 @@ import Fontisto from "react-native-vector-icons/Fontisto";
 import ViewShot from "react-native-view-shot";
 import Share from 'react-native-share';
 import Entypo from "react-native-vector-icons/Entypo";
+import SendNotification from "./SendNotification";
 import {
     AdMobBanner,
     AdMobInterstitial,
@@ -23,7 +24,7 @@ class ShareScreen extends Component{
             {
               title: "Needs Storage Permissions",
               message:
-                "Quote App Needs Storage Permissions to Share Files.",
+                "Quote App Needs Storage Permissions to Download/Share Files.",
               buttonNeutral: "Ask Me Later",
               buttonNegative: "Cancel",
               buttonPositive: "OK"
@@ -84,7 +85,7 @@ class ShareScreen extends Component{
                 <View style={{backgroundColor:"#1a1a1a", height:"25%", justifyContent:"center", alignItems:"center"}}>
                 <AdMobBanner
                 adSize="largeBanner"
-                adUnitID="ca-app-pub-3940256099942544/6300978111"
+                adUnitID="ca-app-pub-3898799702868990/4850565259"
                 testDevices={[AdMobBanner.simulatorId]}
                 onAdFailedToLoad={error => console.error(error)}
 />
