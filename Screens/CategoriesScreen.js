@@ -4,12 +4,7 @@ import MyHeaderButton from "./MyHeaderButton";
 import { HeaderButtons , Item } from "react-navigation-header-buttons";
 import Categories from "./Categories";
 import SendNotification from "./SendNotification";
-import {
-    AdMobBanner,
-    AdMobInterstitial,
-    PublisherBanner,
-    AdMobRewarded,
-  } from 'react-native-admob';
+import Ad from "./Ad";
  class CategoriesScreen extends Component {
     static navigationOptions = ({ navigation }) => {
         return {
@@ -37,12 +32,7 @@ import {
              
                </View>
                <View style={{alignItems:"center", padding:5}}>
-           <AdMobBanner
-                adSize="Banner"
-                adUnitID="ca-app-pub-3898799702868990/4850565259"
-                testDevices={[AdMobBanner.simulatorId]}
-                onAdFailedToLoad={error => console.error(error)}
-/>
+            <Ad size="Banner"/>
 
            </View>
             </View>

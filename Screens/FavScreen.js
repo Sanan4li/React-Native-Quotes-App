@@ -8,30 +8,21 @@ import Entypo from "react-native-vector-icons/Entypo";
 import CameraRoll from "@react-native-community/cameraroll";
 import { NavigationEvents } from 'react-navigation';
 import SendNotification from "./SendNotification";
-import {
-    AdMobBanner,
-    AdMobInterstitial,
-    PublisherBanner,
-    AdMobRewarded,
-  } from 'react-native-admob';
+import Ad from "./Ad";
 import { openDatabase } from 'react-native-sqlite-storage';
 import MyHeaderButton from "./MyHeaderButton";
 import { HeaderButtons , Item } from "react-navigation-header-buttons";
  class FavScreen extends Component {
     static navigationOptions = ({ navigation }) => {
         return {
-         
           headerLeft : 
               <HeaderButtons HeaderButtonComponent={MyHeaderButton}>
                <Item title="Favourtie" iconName="bars" 
                onPress={()=>{
                 navigation.openDrawer();
                }}
-               
                 />
-             </HeaderButtons>
-               
-            
+             </HeaderButtons> 
         };
       };
       state = {
@@ -41,7 +32,8 @@ import { HeaderButtons , Item } from "react-navigation-header-buttons";
          modalVisible:false,
          currentQuote:null,
          currentQuoteBy:null,
-     FlatListItems: [],
+         currentQuoteId:null,
+         FlatListItems: [],
    }
    componentDidMount = ()=>{
        console.log("ComponentDidMount Called");
@@ -149,10 +141,12 @@ getPermissions = async ()=>{
           renderItem={(data)=>{
              
            return(
-               <TouchableOpacity
+               data.item.id>1796? <TouchableOpacity
                onPress={
                    ()=>{
-                    this.props.navigation.navigate("Detail", {id:data.item.id, category:data.item.category,body:data.item.body, by:data.item.by});
+                     let sharedNumber = Math.floor(Math.random() * (999 - 1 + 1) + 1);
+                     let likesNumber = Math.floor(Math.random() * (500 - 1 + 1) + 1);
+                       this.props.navigation.navigate("QuoteDetailScreenUrdu", {id:data.item.id, category:data.item.category,body:data.item.body, by:data.item.by,likes:likesNumber, shares:sharedNumber});
                    }
                }
                
@@ -160,17 +154,85 @@ getPermissions = async ()=>{
               
                 <View>
                 
-                <Image source={require("../assets/images/quotesIcon.png")} style={{width:30, height:30}} />
+               <View style={{marginLeft:"90%"}}>
+               <Image source={require("../assets/images/download.png")} style={{width:30, height:30}} />
               
-                <Text style={{fontFamily:"KulimPark-Light", fontWeight:"bold", fontSize:18, color:"white"}}>
+               </View>
+                <Text style={{fontFamily:"urdu", fontSize:23, color:"white",marginRight:15,}}>
                     { data.item.body }
                  </Text>
                  </View>
-                 <View style={{alignItems:"flex-end", marginTop:5}}>
-                 <Text style={{color:"#66ff66"}}>
-                  ~ {data.item.by}
+                 <View style={{alignItems:"flex-start", marginTop:5, marginLeft:10}}>
+                 <Text style={{color:"#66ff66",fontFamily:"urdu", fontSize:22}}>
+                   {data.item.by}
                  </Text>
                 </View>
+                <View style={{flexDirection:"row", justifyContent:"space-between", marginTop:30, width:"100%", padding:5}}>
+                    
+                <TouchableOpacity style={{ width:"25%", padding:5,}} onPress={
+                   ()=>{
+                       this.deleteQuote(data.item.id);
+                   }
+               }>
+               <Fontisto color="white" size={20} name="trash" style={{alignSelf:"center"}} />
+               </TouchableOpacity>
+              <TouchableOpacity  style={{width:"25%",padding:5}} onPress={()=>{
+                  this.copyText(data.item.body+" "+data.item.by);
+              } }>
+              <Icon name="copy" color="white"size={20} style={{alignSelf:"center"}}/>
+              </TouchableOpacity>
+              <TouchableOpacity  style={{ width:"25%",padding:5}} onPress={
+                 
+                  ()=>{
+                    this.setState({
+                      modalVisible:true,
+                      currentQuote:data.item.body,
+                      currentQuoteBy: data.item.by,
+                      currentQuoteId:data.item.id
+                  },()=>{
+                    console.log(this.state.currentQuoteId);
+                  })
+                      
+                  }
+              }>
+              <Icon name="download" color="white"size={20} style={{alignSelf:"center"}}/>
+              </TouchableOpacity>
+              <TouchableOpacity  style={{ width:"25%",padding:5}} onPress={
+                  ()=>{
+                      this.props.navigation.navigate("ShareScreenUrdu", {body: data.item.body, by:data.item.by});
+                  }
+              }>
+              <Icon name="share" color="white"size={20} style={{alignSelf:"center"}}/>       
+           </TouchableOpacity> 
+               </View>
+               
+               </TouchableOpacity>:
+               <TouchableOpacity
+               onPress={
+                   ()=>{
+                    let sharedNumber = Math.floor(Math.random() * (999 - 1 + 1) + 1);
+                    let likesNumber = Math.floor(Math.random() * (500 - 1 + 1) + 1);
+                      this.props.navigation.navigate("Detail", 
+                      {id:data.item.id, category:data.item.category,body:data.item.body, by:data.item.by, likes:likesNumber, shares:sharedNumber}
+                      ); 
+                  }
+               }
+               
+               style={{  backgroundColor:"#262626",  marginTop:5, borderRadius:5, padding:20, }}> 
+              
+              <View>
+                 
+                 <Image source={require("../assets/images/quotesIcon.png")} style={{width:30, height:30}} />
+               
+                 <Text style={{fontFamily:"KulimPark-Light", fontSize:20, color:"white"}}>
+                     { data.item.body }
+                  </Text>
+                  </View>
+                  <View style={{alignItems:"flex-end", marginTop:5}}>
+                  <Text style={{color:"#66ff66",fontFamily:"KulimPark-Light", fontSize:17}}>
+                   ~ {data.item.by}
+                  </Text>
+                 </View>
                 <View style={{flexDirection:"row", justifyContent:"space-between", marginTop:30, width:"100%", padding:5}}>
                     
                <TouchableOpacity style={{ width:"25%", padding:5,}} onPress={
@@ -191,7 +253,10 @@ getPermissions = async ()=>{
                       this.setState({
                           modalVisible:true,
                           currentQuote:data.item.body,
-                          currentQuoteBy: data.item.by
+                          currentQuoteBy: data.item.by,
+                          currentQuoteId:data.item.id
+                      },()=>{
+                        console.log(this.state.currentQuoteId);
                       })
                       
                   }
@@ -214,12 +279,7 @@ getPermissions = async ()=>{
 
           </View>
           <View style={{alignItems:"center", padding:5}}>
-          <AdMobBanner
-               adSize="Banner"
-               adUnitID="ca-app-pub-3898799702868990/4850565259"
-               testDevices={[AdMobBanner.simulatorId]}
-               onAdFailedToLoad={error => console.error(error)}
-/>
+          <Ad size="Banner" />
 
           </View>
 
@@ -231,63 +291,107 @@ getPermissions = async ()=>{
          onRequestClose={
              this.hideModal
          }>
-           
-         <View style={styles.modal}>
-              <View style={{backgroundColor:"#1a1a1a", height:"30%", justifyContent:"center", alignItems:"center"}}>
-                
-                 <AdMobBanner
-               adSize="largeBanner"
-               adUnitID="ca-app-pub-3940256099942544/6300978111"
-               testDevices={[AdMobBanner.simulatorId]}
-               onAdFailedToLoad={error => console.error(error)}
-/>
-<AdMobBanner
-               adSize="Banner"
-               adUnitID="ca-app-pub-3940256099942544/6300978111"
-               testDevices={[AdMobBanner.simulatorId]}
-               onAdFailedToLoad={error => console.error(error)}
-/>
+            {this.state.currentQuoteId>409?
+            
+            <View style={styles.modal}>
+            <View style={{backgroundColor:"#1a1a1a", height:"30%", justifyContent:"center", alignItems:"center"}}>
+              
+           <Ad size="largeBanner"/>
+           <Ad size="Banner"/>
 
 
+           </View>
+           <ViewShot ref="viewShot" options={{ format: "jpg", quality: 0.9 }}>
+
+       <View style={{marginTop:"5%", padding:10,}}>
+              
+       <View style={{marginLeft:"90%"}}>
+             <Image source={require("../assets/images/download.png")} style={{width:30, height:30}} />
+            
              </View>
-             <ViewShot ref="viewShot" options={{ format: "jpg", quality: 0.9 }}>
-
-         <View style={{marginTop:"5%", padding:10,}}>
-                
-               <Image source={require("../assets/images/quotesIcon.png")} style={{width:50, height:50}} />
-               <Text style={{color:"white",fontFamily:"KulimPark-Light", fontSize:22, paddingHorizontal:20}} numberOfLines={8}>
-               {this.state.currentQuote}
-              </Text>
-               <View style={{alignItems:"flex-end", marginRight:10, paddingBottom:10}}>
-                   <Text style={{color:"#66ff66", paddingRight:10, fontSize:18, paddingBottom:10}}>
-                   ~ {this.state.currentQuoteBy}
-                   </Text>
-               </View>
-               </View>
-                </ViewShot>
-                <TouchableOpacity style={styles.button} onPress={
-                   this.getPermissions
-             }>
-             <View style={{ width:"50%"}}>
-              <Text style={styles.buttonText}>  Download Image </Text>
-              </View>
-              <View style={{ width:"20%"}}>
-              <Icon name="download" color="white"size={25} style={{alignSelf:"center"}}/>
-              </View>
-             </TouchableOpacity>
-             <TouchableOpacity style={styles.button} onPress={
-               this.hideModal
-             }>
-             <View style={{ width:"50%"}}>
-              <Text style={styles.buttonText}>  Cancel </Text>
-              </View>
-              <View style={{ width:"20%"}}>
-              <Entypo name="squared-cross" color="white"size={25} style={{alignSelf:"center"}}/>
-              </View>
-             </TouchableOpacity>
-             
-         </View>
+              <Text style={{fontFamily:"urdu", fontSize:23, color:"white",marginRight:10,paddingHorizontal:20,}}>
+             {this.state.currentQuote}
+            </Text>
+             <View style={{alignItems:"flex-start", marginRight:10, paddingBottom:10}}>
+                 <Text style={{color:"#66ff66",fontFamily:"urdu", marginLeft:20, fontSize:22, paddingBottom:10}}>
+                  {this.state.currentQuoteBy}
+                 </Text>
+             </View>
+             </View>
+              </ViewShot>
+              <TouchableOpacity style={styles.button} onPress={
+                 this.getPermissions
+           }>
+           <View style={{ width:"50%"}}>
+            <Text style={styles.buttonText}>  Download Image </Text>
+            </View>
+            <View style={{ width:"20%"}}>
+            <Icon name="download" color="white"size={25} style={{alignSelf:"center"}}/>
+            </View>
+           </TouchableOpacity>
+           <TouchableOpacity style={styles.button} onPress={
+             this.hideModal
+           }>
+           <View style={{ width:"50%"}}>
+            <Text style={styles.buttonText}>  Cancel </Text>
+            </View>
+            <View style={{ width:"20%"}}>
+            <Entypo name="squared-cross" color="white"size={25} style={{alignSelf:"center"}}/>
+            </View>
+           </TouchableOpacity>
+           
+       </View>
       
+            
+            :
+            <View style={styles.modal}>
+            <View style={{backgroundColor:"#1a1a1a", height:"30%", justifyContent:"center", alignItems:"center"}}>
+              
+          <Ad size="largeBanner"/>
+           <Ad size="Banner"/>
+
+           </View>
+           <ViewShot ref="viewShot" options={{ format: "jpg", quality: 0.9 }}>
+
+       <View style={{marginTop:"5%", padding:10,}}>
+              
+             <Image source={require("../assets/images/quotesIcon.png")} style={{width:50, height:50}} />
+             <Text style={{color:"white",fontFamily:"KulimPark-Light", fontSize:22, paddingHorizontal:20}} numberOfLines={8}>
+             {this.state.currentQuote}
+            </Text>
+             <View style={{alignItems:"flex-end", marginRight:10, paddingBottom:10}}>
+                 <Text style={{color:"#66ff66",fontFamily:"KulimPark-Light", paddingRight:10, fontSize:18, paddingBottom:10}}>
+                 ~ {this.state.currentQuoteBy}
+                 </Text>
+             </View>
+             </View>
+              </ViewShot>
+              <TouchableOpacity style={styles.button} onPress={
+                 this.getPermissions
+           }>
+           <View style={{ width:"50%"}}>
+            <Text style={styles.buttonText}>  Download Image </Text>
+            </View>
+            <View style={{ width:"20%"}}>
+            <Icon name="download" color="white"size={25} style={{alignSelf:"center"}}/>
+            </View>
+           </TouchableOpacity>
+           <TouchableOpacity style={styles.button} onPress={
+             this.hideModal
+           }>
+           <View style={{ width:"50%"}}>
+            <Text style={styles.buttonText}>  Cancel </Text>
+            </View>
+            <View style={{ width:"20%"}}>
+            <Entypo name="squared-cross" color="white"size={25} style={{alignSelf:"center"}}/>
+            </View>
+           </TouchableOpacity>
+           
+       </View>
+      
+            }
+        
+         
 
        </Modal>
             <Toast ref="toast"  style={{backgroundColor:'#38b750'}}

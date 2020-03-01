@@ -32,6 +32,7 @@ class  App extends React.Component {
     }
     return (
       <View style={{backgroundColor:"#1a1a1a", flex:1}}>
+      <StatusBar backgroundColor='#1a1a1a' barStyle='light-content' />
         {component}
       </View>
       

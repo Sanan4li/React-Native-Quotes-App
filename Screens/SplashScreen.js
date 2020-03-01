@@ -22,7 +22,7 @@ class  SplashScreen extends React.Component {
         quotes:[
             {id:"1", body:"Change the world by being yourself."},
             {id:"2", body:"Every moment is a fresh beginning."},
-            {id:"3", body:"Success is the best revenge for anything."},
+            {id:"3", body:"Nothing works until you do."},
             {id:"4", body:"Everything you can imagine is real."},
             {id:"5", body:"Whatever you do, do it well."},
             {id:"6", body:"What we think, we become."},
@@ -64,7 +64,7 @@ class  SplashScreen extends React.Component {
         alignSelf:"center",
         color:"white",
         fontFamily:"KulimPark-Light", 
-        fontSize:20, 
+        fontSize:18, 
         paddingHorizontal:20,
       },
   });

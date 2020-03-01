@@ -29,7 +29,7 @@
         <meta-data  android:name="com.dieam.reactnativepushnotification.notification_channel_description"
                     android:value="YOUR NOTIFICATION CHANNEL DESCRIPTION"/>
 
-      <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-3898799702868990~4596055010"/>
+      <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-7101577265463479~5718203027"/>
       <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
             android:exported="true"

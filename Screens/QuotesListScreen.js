@@ -6,12 +6,7 @@ import Toast, {DURATION} from 'react-native-easy-toast';
 import ViewShot from "react-native-view-shot";
 import Entypo from "react-native-vector-icons/Entypo";
 import CameraRoll from "@react-native-community/cameraroll";
-import {
-    AdMobBanner,
-    AdMobInterstitial,
-    PublisherBanner,
-    AdMobRewarded,
-  } from 'react-native-admob';
+import Ad from "./Ad";
 import QuotesData from "./QuotesData";
 import SendNotification from "./SendNotification";
 import { openDatabase } from 'react-native-sqlite-storage';
@@ -34,6 +29,7 @@ class QuotesListScreen extends Component{
           
     }
     componentDidMount = ()=>{
+      console.log(this.state.data[1796]);
         let category = this.props.navigation.getParam("title");
         let data = this.state.data.filter(
             (d)=>{
@@ -127,7 +123,11 @@ class QuotesListScreen extends Component{
                 <TouchableOpacity
                 onPress={
                     ()=>{
-                        this.props.navigation.navigate("Detail", {id:data.item.id, category:data.item.category,body:data.item.body, by:data.item.by});
+                      let sharedNumber = Math.floor(Math.random() * (999 - 1 + 1) + 1);
+                      let likesNumber = Math.floor(Math.random() * (500 - 1 + 1) + 1);
+                        this.props.navigation.navigate("Detail", 
+                        {id:data.item.id, category:data.item.category,body:data.item.body, by:data.item.by, likes:likesNumber, shares:sharedNumber}
+                        );
                     }
                 }
                 
@@ -137,13 +137,13 @@ class QuotesListScreen extends Component{
                  
                  <Image source={require("../assets/images/quotesIcon.png")} style={{width:30, height:30}} />
                
-                 <Text style={{fontFamily:"KulimPark-Light", fontWeight:"bold", fontSize:18, color:"white"}}>
+                 <Text style={{fontFamily:"KulimPark-Light", fontSize:20, color:"white"}}>
                      { data.item.body }
                   </Text>
                   </View>
                   <View style={{alignItems:"flex-end", marginTop:5}}>
-                  <Text style={{color:"#66ff66"}}>
-                   ~ {data.item.by}
+                  <Text style={{color:"#66ff66",fontFamily:"KulimPark-Light", fontSize:18}}>
+                    {data.item.by}
                   </Text>
                  </View>
                  <View style={{flexDirection:"row", justifyContent:"space-between", marginTop:30, width:"100%", padding:5}}>
@@ -158,7 +158,7 @@ class QuotesListScreen extends Component{
                 <Fontisto color="white" size={20} name="heart" style={{alignSelf:"center"}} />
                 </TouchableOpacity>
                <TouchableOpacity  style={{width:"25%",padding:5}} onPress={()=>{
-                   this.copyText(data.item.body);
+                   this.copyText(data.item.body+" "+data.item.by);
                } }>
                <Icon name="copy" color="white"size={20} style={{alignSelf:"center"}}/>
                </TouchableOpacity>
@@ -191,12 +191,7 @@ class QuotesListScreen extends Component{
 
            </View>
            <View style={{alignItems:"center", padding:5}}>
-           <AdMobBanner
-                adSize="Banner"
-                adUnitID="ca-app-pub-3898799702868990/4850565259"
-                testDevices={[AdMobBanner.simulatorId]}
-                onAdFailedToLoad={error => console.error(error)}
-/>
+           <Ad size="Banner"/>
 
            </View>
 
@@ -212,19 +207,8 @@ class QuotesListScreen extends Component{
           <View style={styles.modal}>
                <View style={{backgroundColor:"#1a1a1a", height:"30%", justifyContent:"center", alignItems:"center"}}>
                  
-                  <AdMobBanner
-                adSize="largeBanner"
-                adUnitID="ca-app-pub-3940256099942544/6300978111"
-                testDevices={[AdMobBanner.simulatorId]}
-                onAdFailedToLoad={error => console.error(error)}
-/>
-<AdMobBanner
-                adSize="Banner"
-                adUnitID="ca-app-pub-3940256099942544/6300978111"
-                testDevices={[AdMobBanner.simulatorId]}
-                onAdFailedToLoad={error => console.error(error)}
-/>
-
+             <Ad size="largeBanner"/>
+             
 
               </View>
               <ViewShot ref="viewShot" options={{ format: "jpg", quality: 0.9 }}>
@@ -236,8 +220,8 @@ class QuotesListScreen extends Component{
                 {this.state.currentQuote}
                </Text>
                 <View style={{alignItems:"flex-end", marginRight:10, paddingBottom:10}}>
-                    <Text style={{color:"#66ff66", paddingRight:10, fontSize:18, paddingBottom:10}}>
-                    ~ {this.state.currentQuoteBy}
+                    <Text style={{color:"#66ff66",fontFamily:"KulimPark-Light", paddingRight:10, fontSize:19, paddingBottom:10}}>
+                     {this.state.currentQuoteBy}
                     </Text>
                 </View>
                 </View>

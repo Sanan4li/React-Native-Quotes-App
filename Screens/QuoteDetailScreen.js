@@ -9,31 +9,25 @@ import Fontisto from "react-native-vector-icons/Fontisto";
 import ViewShot from "react-native-view-shot";
 import Toast, {DURATION} from 'react-native-easy-toast';
 import SendNotification from "./SendNotification";
-
-import {
-    AdMobBanner,
-    AdMobInterstitial,
-    PublisherBanner,
-    AdMobRewarded,
-  } from 'react-native-admob';
+import Ad from "./Ad";
 import { openDatabase } from 'react-native-sqlite-storage';
  class QuoteDetailScreen extends Component {
-    static navigationOptions = ({ navigation }) => {
-        return {
-         headerRight : 
-         <HeaderButtons HeaderButtonComponent={MyHeaderButtonNew}>
-          <Item title="Favourtie" iconName="heart" 
-          onPress={()=>{
-           console.log("Search Button Pressed")
-          }}
+    // static navigationOptions = ({ navigation }) => {
+    //     return {
+    //      headerRight : 
+    //      <HeaderButtons HeaderButtonComponent={MyHeaderButtonNew}>
+    //       <Item title="Favourtie" iconName="heart" 
+    //       onPress={()=>{
+    //        console.log("Search Button Pressed")
+    //       }}
           
-           />
-        </HeaderButtons>,
+    //        />
+    //     </HeaderButtons>,
              
             
             
-        };
-      };
+    //     };
+    //   };
       state = {
         likeText : "Likes",
         likeColor:"white",
@@ -109,8 +103,8 @@ import { openDatabase } from 'react-native-sqlite-storage';
 
 
     render() {
-      let sharedNumber = Math.floor(Math.random() * (999 - 1 + 1) + 1);
-      let likesNumber = Math.floor(Math.random() * (500 - 1 + 1) + 1);
+      let sharedNumber = this.props.navigation.getParam("likes");
+      let likesNumber = this.props.navigation.getParam("shares");
       let quote = this.props.navigation.getParam("body"); // 
       let by = this.props.navigation.getParam("by");
       let id = this.props.navigation.getParam("id");
@@ -121,12 +115,7 @@ import { openDatabase } from 'react-native-sqlite-storage';
                 <SendNotification/>
               <View style={{ height:"62%"}}>
                 <View style={{alignItems:"center"}}>
-                <AdMobBanner
-                adSize="Banner"
-                adUnitID="ca-app-pub-3898799702868990/4850565259"
-                testDevices={[AdMobBanner.simulatorId]}
-                onAdFailedToLoad={error => console.error(error)}
-/>
+             <Ad size="Banner"/>
                 </View>
               <ViewShot ref="viewShot" options={{  format: "jpg" , quality: 0.9 }}>
               <View style={{marginTop:"5%", padding:10}}>
@@ -137,7 +126,7 @@ import { openDatabase } from 'react-native-sqlite-storage';
                 </Text>
                 <View style={{alignItems:"flex-end", marginRight:10, paddingBottom:10}}>
                     <Text style={styles.author}>
-                      ~ {by}
+                       {by}
                     </Text>
                 </View>
                 </View>
@@ -185,7 +174,7 @@ import { openDatabase } from 'react-native-sqlite-storage';
                 
               </TouchableOpacity>
               <TouchableOpacity style={styles.button}  onPress={()=>{
-                this.copyText(quote);
+                this.copyText(quote+" "+by);
               } }>
               <View style={{ width:"50%"}}>
                 <Text style={styles.buttonText}> Copy as Text</Text>
@@ -250,8 +239,9 @@ const styles = StyleSheet.create({
   author : {
     color:"#66ff66", 
     paddingRight:10, 
-    fontSize:18, 
-    paddingBottom:10
+    fontSize:19, 
+    paddingBottom:10,
+    fontFamily:"KulimPark-Light",
   }
 });
 export default QuoteDetailScreen;

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {StyleSheet, View, Text, Alert, Button, TextInput, KeyboardAvoidingView, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, Text, Alert, Linking, TextInput, KeyboardAvoidingView, TouchableOpacity} from 'react-native';
 import MyHeaderButton from "./MyHeaderButton";
 import { HeaderButtons , Item } from "react-navigation-header-buttons";
 import SendNotification from "./SendNotification";
@@ -26,6 +26,10 @@ import email from 'react-native-email';
           title:null,
           message : null
       }
+      openFacebook = ()=>{
+         Linking.openURL('fb://page/110899427139639');
+        // Linking.openURL('fb://profile/100003097706527');
+     }
       componentDidMount = () => {
        
         } 
@@ -83,12 +87,23 @@ import email from 'react-native-email';
         
          
                         
-<TouchableOpacity style={styles.Sharebutton} onPress={this.handleEmail}>
+            <TouchableOpacity style={styles.Sharebutton} onPress={this.handleEmail}>
             <View style={{ width:"50%"}}>
             <Text style={styles.buttonText}>  Send Message</Text>
             </View>
             <View style={{ width:"20%"}}>
             <Icon name="send" color="white"size={25} style={{alignSelf:"center"}}/>
+            </View>
+            </TouchableOpacity>
+           <View style={{height:20}}>
+
+           </View>
+            <TouchableOpacity style={styles.Sharebutton} onPress={this.openFacebook}>
+            <View style={{ width:"50%"}}>
+            <Text style={styles.buttonText}> Like Our Page</Text>
+            </View>
+            <View style={{ width:"20%"}}>
+            <Icon name="facebook-square" color="white"size={25} style={{alignSelf:"center"}}/>
             </View>
             </TouchableOpacity>
            

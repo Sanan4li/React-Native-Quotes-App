@@ -5,10 +5,9 @@ import { HeaderButtons , Item } from "react-navigation-header-buttons";
 import Carousel, {ParallaxImage} from 'react-native-snap-carousel';
 import Categories from "./Categories";
 import Dots from 'react-native-dots-pagination';import {PERMISSIONS, request} from 'react-native-permissions';
-import { openDatabase } from 'react-native-sqlite-storage';
 import PushNotification from 'react-native-push-notification';
 import SendNotification from "./SendNotification";
-
+import {initAgain} from "./Database";
  class HomeScreen extends Component {
      
     static navigationOptions = ({ navigation }) => {
@@ -23,15 +22,15 @@ import SendNotification from "./SendNotification";
           
            />
         </HeaderButtons>,
-         headerRight : 
-         <HeaderButtons HeaderButtonComponent={MyHeaderButton}>
-          <Item title="Favourtie" iconName="search" 
-          onPress={()=>{
-           console.log("Search Button Pressed")
-          }}
+        //  headerRight : 
+        //  <HeaderButtons HeaderButtonComponent={MyHeaderButton}>
+        //   <Item title="Favourtie" iconName="search" 
+        //   onPress={()=>{
+        //    console.log("Search Button Pressed")
+        //   }}
           
-           />
-        </HeaderButtons>,
+        //    />
+        // </HeaderButtons>,
              
                
             
@@ -58,7 +57,9 @@ import SendNotification from "./SendNotification";
            
                 <TouchableOpacity onPress={
                     ()=>{
-                       this.props.navigation.navigate("Detail", {id:item.id, category:item.category,body:item.body, by:item.by});
+                      let sharedNumber = Math.floor(Math.random() * (999 - 1 + 1) + 1);
+                      let likesNumber = Math.floor(Math.random() * (500 - 1 + 1) + 1);
+                       this.props.navigation.navigate("Detail", {id:item.id, category:item.category,body:item.body, by:item.by,likes:likesNumber, shares:sharedNumber});
                     }
                 } style={styles.item}>
                 <View>
@@ -68,7 +69,7 @@ import SendNotification from "./SendNotification";
                 </Text>
                 </View>
                 <View style={{alignItems:"flex-end"}}>
-                    <Text style={{color:"#66ff66"}}>
+                    <Text style={{fontFamily:"KulimPark-Regular", fontSize:16, color:"#66ff66"}}>
                        ~ {item.by}
                     </Text>
                 </View>
@@ -78,6 +79,7 @@ import SendNotification from "./SendNotification";
     }
 
     componentDidMount = ()=>{
+        initAgain();
         PushNotification.configure({
             // (required) Called when a remote or local notification is opened or received
             onNotification: notification => {
@@ -86,14 +88,20 @@ import SendNotification from "./SendNotification";
                 console.log("View Clicked");
                
                 PushNotification.cancelAllLocalNotifications();
-                this.props.navigation.navigate("Detail", {body:notification.quoteInfo.body, by:notification.quoteInfo.by});
+                if(notification.quoteInfo.id>1797){
+                  this.props.navigation.navigate("QuoteDetailScreenUrdu", {id:notification.quoteInfo.body ,body:notification.quoteInfo.body, by:notification.quoteInfo.by});
              
+                }
+                else{
+                  this.props.navigation.navigate("Detail", {id:notification.quoteInfo.body, body:notification.quoteInfo.body, by:notification.quoteInfo.by});
+             
+                }
               } 
             },
             popInitialNotification: true,
             requestPermissions: true
           });
-          
+
     }
     
    
@@ -175,8 +183,8 @@ const styles = StyleSheet.create({
       popularText :{
           color:"white", 
           fontFamily:"KulimPark-Regular", 
-          fontWeight:"bold", 
-          fontSize:16, 
+         
+          fontSize:18, 
           marginLeft:22,
           padding:2
         }

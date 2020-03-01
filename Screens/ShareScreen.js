@@ -6,12 +6,7 @@ import ViewShot from "react-native-view-shot";
 import Share from 'react-native-share';
 import Entypo from "react-native-vector-icons/Entypo";
 import SendNotification from "./SendNotification";
-import {
-    AdMobBanner,
-    AdMobInterstitial,
-    PublisherBanner,
-    AdMobRewarded,
-  } from 'react-native-admob';
+import Ad from "./Ad";
 class ShareScreen extends Component{
     componentDidMount = ()=>{
         
@@ -76,32 +71,27 @@ class ShareScreen extends Component{
         let quote = this.props.navigation.getParam("body");
         let by = this.props.navigation.getParam("by");
         return(
-            <View style={{ backgroundColor:"#1a1a1a",
+            <View style={{ backgroundColor:"#0d0d0d",
             flex: 1,
             flexDirection: 'column',
             width:"100%",
             height:"70%",
            }}>
-                <View style={{backgroundColor:"#1a1a1a", height:"25%", justifyContent:"center", alignItems:"center"}}>
-                <AdMobBanner
-                adSize="largeBanner"
-                adUnitID="ca-app-pub-3898799702868990/4850565259"
-                testDevices={[AdMobBanner.simulatorId]}
-                onAdFailedToLoad={error => console.error(error)}
-/>
+                <View style={{backgroundColor:"#0d0d0d", height:"25%", justifyContent:"center", alignItems:"center"}}>
+                <Ad size="largeBanner"/>
 
                 </View>
                 <ViewShot ref="viewShot" options={{ result: "base64", quality: 0.9 }}>
               
-            <View style={{ padding:10, backgroundColor:"#1a1a1a"}}>
+            <View style={{ padding:10, backgroundColor:"#0d0d0d"}}>
              
                   <Image source={require("../assets/images/quotesIcon.png")} style={{width:50, height:50}} />
                   <Text style={{color:"white",fontFamily:"KulimPark-Light", fontSize:22, paddingHorizontal:20}} numberOfLines={8}>
                   {quote}
                  </Text>
                   <View style={{alignItems:"flex-end", marginRight:10, paddingBottom:10}}>
-                      <Text style={{color:"#66ff66", paddingRight:10, fontSize:18, paddingBottom:10}}>
-                        ~ {by}
+                      <Text style={{color:"#66ff66", fontFamily:"KulimPark-Light", paddingRight:10, fontSize:19, paddingBottom:10}}>
+                         {by}
                       </Text>
                   </View>
                  
@@ -124,7 +114,7 @@ class ShareScreen extends Component{
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.Sharebutton} onPress={
                     ()=>{
-                      this.ShareNow(quote);
+                      this.ShareNow(quote+" "+by);
                     }
                 }>
                 <View style={{ width:"50%"}}>

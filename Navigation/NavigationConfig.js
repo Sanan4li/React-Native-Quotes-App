@@ -14,11 +14,17 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import FavScreen from "../Screens/FavScreen";
 import HomeScreen from "../Screens/HomeScreen";
 import CategoriesScreen from "../Screens/CategoriesScreen";
+import CategoriesUrdu from "../Screens/CategoriesUrdu";
 import CartScreen from "../Screens/CartScreen";
 import QuoteDetailScreen from "../Screens/QuoteDetailScreen";
+import QuoteDetailScreenUrdu from "../Screens/QuoteDetailScreenUrdu";
 import QuotesListScreen from "../Screens/QuotesListScreen";
+import QuotesListScreenUrdu from "../Screens/QuotesListScreenUrdu";
 import ShareScreen from "../Screens/ShareScreen";
+import ShareScreenUrdu from "../Screens/ShareScreenUrdu";
 import Contact from "../Screens/Contact";
+import SettingsScreen from "../Screens/SettingsScreen";
+import RatingScreen from "../Screens/RatingScreen";
 const defaultOptionsForStack =  {
     defaultNavigationOptions: {
        
@@ -26,13 +32,15 @@ const defaultOptionsForStack =  {
         backgroundColor: '#1a1a1a',
         elevation: 0,
         shadowOpacity: 0,
-        height:50
+        height:50,
+        fontFamily:"KulimPark-Regular", 
     },
     headerTintColor: '#FFFFFF',
     headerTitleStyle: {
         fontWeight: 'bold',
         color: '#FFFFFF',
-         fontSize:18
+         fontSize:18,
+       
     }
 }   
       
@@ -54,7 +62,30 @@ const defaultOptionsForStack =  {
 
   }, defaultOptionsForStack
   
-  );     
+  );    
+  const UrduStock = createStackNavigator({
+    CategoriesUrdu : {
+        screen : CategoriesUrdu,
+        navigationOptions : {
+          headerTitle : "Urdu"
+      }
+    },
+  //   CategoriesProducts : {
+  //       screen : CategoriesProductsScreen,
+  QuestListUrdu : {
+      screen : QuotesListScreenUrdu
+  },
+  QuoteDetailScreenUrdu : {
+    screen : QuoteDetailScreenUrdu
+},
+ ShareScreenUrdu : {
+     screen : ShareScreenUrdu
+ }
+ 
+
+}, defaultOptionsForStack
+
+);   
 
   const HomeStack = createStackNavigator({
    
@@ -81,7 +112,8 @@ const defaultOptionsForStack =  {
         navigationOptions : {
             headerTitle : "Share Options"
         }
-    }
+    },
+
     // Cart : {
     //     screen : CartScreen
     // }
@@ -105,12 +137,15 @@ const FavStack = createStackNavigator({
           headerTitle : ""
       }
     },
+    QuoteDetailScreenUrdu : {
+        screen : QuoteDetailScreenUrdu
+    },
     Share : {
         screen :ShareScreen,
         navigationOptions : {
             headerTitle : "Share Options"
         }
-    }
+    },
 
 //     Cart : {
 //         screen : CartScreen
@@ -145,8 +180,30 @@ const ContactStack = createStackNavigator({
 
 );     
 
+const SettingsStock = createStackNavigator({
+   
+    Cart : {
+        screen : SettingsScreen,
+        navigationOptions:{
+            headerTitle : "Settings"
+        }
+    },
+}, defaultOptionsForStack
+
+);   
 
 
+const RatingStock = createStackNavigator({
+   
+    Rating : {
+        screen : RatingScreen,
+        navigationOptions:{
+            headerTitle : "Rate Us"
+        }
+    },
+}, defaultOptionsForStack
+
+);   
 
 
   const NavigationDrawer = createDrawerNavigator({
@@ -167,6 +224,14 @@ const ContactStack = createStackNavigator({
                    }
         }
         },
+        Urdu : {
+            screen : UrduStock,
+                navigationOptions : {
+                    drawerIcon: ({ tintColor }) => {
+                        return   <Icon name="feather-alt" size={20} color={tintColor} />
+                       }
+            }
+            },
 
     Favourites : {
         screen : FavStack,
@@ -193,20 +258,38 @@ const ContactStack = createStackNavigator({
                    }
         }
         },
+    "Settings" : {
+        screen : SettingsStock,
+        navigationOptions : {
+            drawerIcon: ({ tintColor }) => {
+                return   <FontAwesome name="gear" size={20} color={tintColor} />
+               }
+    }
+    },
+    "Rate Us" : {
+        screen : RatingStock,
+        navigationOptions : {
+            drawerIcon: ({ tintColor }) => {
+                return   <FontAwesome name="star" size={20} color={tintColor} />
+               }
+    }
+    },
+    
     
     },
     {
         contentOptions: {
             activeTintColor: "#33ff33",
             activeBackgroundColor : "#000000",
-            inactiveTintColor:"white"
+            inactiveTintColor:"white",
+            fontFamily:"KulimPark-Regular", 
         },
         contentComponent: (props) => (
            
          <SafeAreaView style={{backgroundColor:"#1a1a1a", color:"white", flex:1}}>
              <View style={{height: 100,alignItems: 'center', justifyContent: 'center'}}>
              <ImageBackground resizeMode="cover" source={require("../assets/images/qu.jpg")} style={{width: '100%', height: '100%'}}>
-                <Text style={{fontSize:20, color:"white", textAlign : "left", marginTop:20, marginLeft:50, fontFamily:"BebasNeue-Regular"}}>Success</Text>
+                <Text style={{fontSize:20, color:"white", textAlign : "left", marginTop:18, marginLeft:30, fontFamily:"BebasNeue-Regular"}}>Success</Text>
             </ImageBackground>
              </View>
            <ScrollView>

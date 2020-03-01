@@ -184,6 +184,7 @@ dependencies {
     //implementation project(':react-native-admob')
     implementation 'com.android.support:multidex:1.0.3'
 implementation project(':react-native-sqlite-storage')
+implementation 'com.google.android.gms:play-services-ads:18.3.0'
    // implementation project(':react-native-firebase')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
